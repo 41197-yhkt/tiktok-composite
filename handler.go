@@ -2,26 +2,26 @@ package main
 
 import (
 	"context"
-	compoiste "tiktok/kitex_gen/compoiste"
+	composite "tiktok/kitex_gen/composite"
 )
 
-// DouyinServiceImpl implements the last service interface defined in the IDL.
-type DouyinServiceImpl struct{}
+// CompositeServiceImpl implements the last service interface defined in the IDL.
+type CompositeServiceImpl struct{}
 
-// BasicFavoriteActionMethod implements the DouyinServiceImpl interface.
-func (s *DouyinServiceImpl) BasicFavoriteActionMethod(ctx context.Context, req *compoiste.BasicFavoriteActionRequest) (resp *compoiste.BasicFavoriteActionResponse, err error) {
+// BasicFavoriteActionMethod implements the CompositeServiceImpl interface.
+func (s *CompositeServiceImpl) BasicFavoriteActionMethod(ctx context.Context, req *composite.BasicFavoriteActionRequest) (resp *composite.BasicFavoriteActionResponse, err error) {
 	// TODO: Your code here...
 	return
 }
 
-// BasicFavoriteListMethod implements the DouyinServiceImpl interface.
-func (s *DouyinServiceImpl) BasicFavoriteListMethod(ctx context.Context, req *compoiste.BasicFavoriteListRequest) (resp *compoiste.BasicFavoriteListResponse, err error) {
+// BasicFavoriteListMethod implements the CompositeServiceImpl interface.
+func (s *CompositeServiceImpl) BasicFavoriteListMethod(ctx context.Context, req *composite.BasicFavoriteListRequest) (resp *composite.BasicFavoriteListResponse, err error) {
 	// TODO: Your code here...
 	return
 }
 
-// BasicFeedMethod implements the DouyinServiceImpl interface.
-func (s *DouyinServiceImpl) BasicFeedMethod(ctx context.Context, req *compoiste.BasicFeedRequest) (resp *compoiste.BasicFeedResponse, err error) {
+// BasicFeedMethod implements the CompositeServiceImpl interface.
+func (s *CompositeServiceImpl) BasicFeedMethod(ctx context.Context, req *composite.BasicFeedRequest) (resp *composite.BasicFeedResponse, err error) {
 	// TODO: Your code here...
 	return
 }

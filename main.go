@@ -2,11 +2,11 @@ package main
 
 import (
 	"log"
-	compoiste "tiktok/kitex_gen/compoiste/douyinservice"
+	composite "tiktok/kitex_gen/composite/compositeservice"
 )
 
 func main() {
-	svr := compoiste.NewServer(new(DouyinServiceImpl))
+	svr := composite.NewServer(new(CompositeServiceImpl))
 
 	err := svr.Run()
 
