@@ -2,7 +2,7 @@ package dal
 
 import (
 	"sync"
-	"tiktok/gen/dal/model"
+	"tiktok-composite/gen/dal/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -11,7 +11,7 @@ import (
 var DB *gorm.DB
 var once sync.Once
 
-func init() {
+func Init() {
 	once.Do(func() {
 		DB = ConnctDB().Debug()
 		_ = DB.AutoMigrate(&model.Vedio{}, &model.UserFavorite{})

@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	composite "tiktok/kitex_gen/composite"
+	composite "tiktok-composite/kitex_gen/composite"
 )
 
 // CompositeServiceImpl implements the last service interface defined in the IDL.

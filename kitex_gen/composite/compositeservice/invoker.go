@@ -4,7 +4,7 @@ package compositeservice
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	composite "tiktok/kitex_gen/composite"
+	composite "tiktok-composite/kitex_gen/composite"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.

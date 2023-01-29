@@ -6,7 +6,7 @@ import (
 	"context"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
-	composite "tiktok/kitex_gen/composite"
+	composite "tiktok-composite/kitex_gen/composite"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.

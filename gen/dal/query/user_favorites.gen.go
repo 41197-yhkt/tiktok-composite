@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"tiktok/gen/dal/model"
+	"tiktok-composite/gen/dal/model"
 )
 
 func newUserFavorite(db *gorm.DB, opts ...gen.DOOption) userFavorite {
