@@ -11,7 +11,7 @@ import (
 	etcd "github.com/kitex-contrib/registry-etcd"
 )
 
-var userFavoriteClient compositeservice.Client
+var compositeClient compositeservice.Client
 
 // 初始化 client
 func initUserFavoriteRpc() {
@@ -27,7 +27,7 @@ func initUserFavoriteRpc() {
 	if err != nil {
 		panic(err)
 	}
-	userFavoriteClient = c
+	compositeClient = c
 }
 
 // client 模板
@@ -39,18 +39,43 @@ func main() {
 	// 调用 BasicFavoriteActionMethod 方法
 	// 定义请求
 	// req := &composite.BasicFavoriteActionRequest{VedioId: 1, UserId: 1}
-	// resp, err := userFavoriteClient.BasicFavoriteActionMethod(ctx, req)
+	// resp, err := compositeClient.BasicFavoriteActionMethod(ctx, req)
 	// if err != nil {
 	// 	panic(err)
 	// }
 	// fmt.Println(resp)
 
 	// 调用 BasicFavoriteActionMethod 方法
-	req := &composite.BasicFavoriteListRequest{UserId: 2, QueryId: 1}
-	resp, err := userFavoriteClient.BasicFavoriteListMethod(ctx, req)
+	// req := &composite.BasicFavoriteListRequest{UserId: 2, QueryId: 1}
+	// resp, err := compositeClient.BasicFavoriteListMethod(ctx, req)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println("Call BasicFavoriteListMethod: ", resp)
+
+	// 调用 CommentMethod 方法增加评论
+	// commentText := "你好哈哈"
+	// req := &composite.BasicCommentActionRequest{
+	// 	UserId:      1,
+	// 	VedioId:     2,
+	// 	ActionType:  1,
+	// 	CommentText: &commentText,
+	// }
+	// resp, err := compositeClient.BasicCommentActionMethod(ctx, req)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println("Call BadicCommentActionMethod to add comment: ", resp)
+
+	// 调用 CommentMethod 方法删除评论
+	var deleteId int64 = 1
+	req := &composite.BasicCommentActionRequest{
+		ActionType: 2,
+		CommentId:  &deleteId,
+	}
+	resp, err := compositeClient.BasicCommentActionMethod(ctx, req)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Call BasicFavoriteListMethod: ", resp)
-
+	fmt.Println("Call BadicCommentActionMethod to delete comment: ", resp)
 }

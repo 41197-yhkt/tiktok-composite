@@ -29,3 +29,11 @@ type UserFavorite struct {
 	UserId  int64 `gorm:"column:user_id"`
 	VedioId int64 `gorm:"column:vedio_id"`
 }
+
+type Comment struct {
+	gorm.Model
+	Id      uint   `gorm:"primary_key"`
+	UserId  int64  `gorm:"column:user_id"`
+	VedioId int64  `gorm:"column:vedio_id"`
+	Content string `gorm:"column:content"`
+}

@@ -14,6 +14,8 @@ type Client interface {
 	BasicFavoriteActionMethod(ctx context.Context, req *composite.BasicFavoriteActionRequest, callOptions ...callopt.Option) (r *composite.BasicFavoriteActionResponse, err error)
 	BasicFavoriteListMethod(ctx context.Context, req *composite.BasicFavoriteListRequest, callOptions ...callopt.Option) (r *composite.BasicFavoriteListResponse, err error)
 	BasicFeedMethod(ctx context.Context, req *composite.BasicFeedRequest, callOptions ...callopt.Option) (r *composite.BasicFeedResponse, err error)
+	BasicCommentActionMethod(ctx context.Context, req *composite.BasicCommentActionRequest, callOptions ...callopt.Option) (r *composite.BasicCommentActionResponse, err error)
+	BasicCommentListMethod(ctx context.Context, req *composite.BasicCommentListRequest, callOptions ...callopt.Option) (r *composite.BasicCommentListResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -58,4 +60,14 @@ func (p *kCompositeServiceClient) BasicFavoriteListMethod(ctx context.Context, r
 func (p *kCompositeServiceClient) BasicFeedMethod(ctx context.Context, req *composite.BasicFeedRequest, callOptions ...callopt.Option) (r *composite.BasicFeedResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.BasicFeedMethod(ctx, req)
+}
+
+func (p *kCompositeServiceClient) BasicCommentActionMethod(ctx context.Context, req *composite.BasicCommentActionRequest, callOptions ...callopt.Option) (r *composite.BasicCommentActionResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.BasicCommentActionMethod(ctx, req)
+}
+
+func (p *kCompositeServiceClient) BasicCommentListMethod(ctx context.Context, req *composite.BasicCommentListRequest, callOptions ...callopt.Option) (r *composite.BasicCommentListResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.BasicCommentListMethod(ctx, req)
 }

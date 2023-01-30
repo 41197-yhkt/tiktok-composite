@@ -53,3 +53,28 @@ func (s *CompositeServiceImpl) BasicFeedMethod(ctx context.Context, req *composi
 	// TODO: Your code here...
 	return
 }
+
+// BasicCommentActionMethod implements the CompositeServiceImpl interface.
+func (s *CompositeServiceImpl) BasicCommentActionMethod(ctx context.Context, req *composite.BasicCommentActionRequest) (resp *composite.BasicCommentActionResponse, err error) {
+	resp = new(composite.BasicCommentActionResponse)
+
+	// 检验参数是否符合规范
+	if (req.ActionType == 1 && (req.VedioId <= 0 || req.UserId <= 0)) || (req.ActionType == 2 && (*req.CommentId <= 0)) {
+		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
+		return resp, nil
+	}
+
+	resp.Comment, err = service.NewCommentActionService(ctx).CommentAction(req)
+	if err != nil {
+		resp.BaseResp = pack.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.BaseResp = pack.BuildBaseResp(errno.Success)
+	return resp, nil
+}
+
+// BasicCommentListMethod implements the CompositeServiceImpl interface.
+func (s *CompositeServiceImpl) BasicCommentListMethod(ctx context.Context, req *composite.BasicCommentListRequest) (resp *composite.BasicCommentListResponse, err error) {
+	// TODO: Your code here...
+	return
+}

@@ -20,6 +20,7 @@ func main() {
 	g.ApplyInterface(func(model.UserMethod) {}, model.User{})
 	g.ApplyInterface(func(model.VedioMethod) {}, model.Vedio{})
 	g.ApplyInterface(func(model.UserFavoriteMethod) {}, model.UserFavorite{})
+	g.ApplyInterface(func(model.CommentMethod) {}, model.Comment{})
 
 	// 最后调用 Execute 方法来触发生成
 	g.Execute()

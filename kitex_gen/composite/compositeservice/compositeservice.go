@@ -22,6 +22,8 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"BasicFavoriteActionMethod": kitex.NewMethodInfo(basicFavoriteActionMethodHandler, newCompositeServiceBasicFavoriteActionMethodArgs, newCompositeServiceBasicFavoriteActionMethodResult, false),
 		"BasicFavoriteListMethod":   kitex.NewMethodInfo(basicFavoriteListMethodHandler, newCompositeServiceBasicFavoriteListMethodArgs, newCompositeServiceBasicFavoriteListMethodResult, false),
 		"BasicFeedMethod":           kitex.NewMethodInfo(basicFeedMethodHandler, newCompositeServiceBasicFeedMethodArgs, newCompositeServiceBasicFeedMethodResult, false),
+		"BasicCommentActionMethod":  kitex.NewMethodInfo(basicCommentActionMethodHandler, newCompositeServiceBasicCommentActionMethodArgs, newCompositeServiceBasicCommentActionMethodResult, false),
+		"BasicCommentListMethod":    kitex.NewMethodInfo(basicCommentListMethodHandler, newCompositeServiceBasicCommentListMethodArgs, newCompositeServiceBasicCommentListMethodResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "composite",
@@ -91,6 +93,42 @@ func newCompositeServiceBasicFeedMethodResult() interface{} {
 	return composite.NewCompositeServiceBasicFeedMethodResult()
 }
 
+func basicCommentActionMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*composite.CompositeServiceBasicCommentActionMethodArgs)
+	realResult := result.(*composite.CompositeServiceBasicCommentActionMethodResult)
+	success, err := handler.(composite.CompositeService).BasicCommentActionMethod(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newCompositeServiceBasicCommentActionMethodArgs() interface{} {
+	return composite.NewCompositeServiceBasicCommentActionMethodArgs()
+}
+
+func newCompositeServiceBasicCommentActionMethodResult() interface{} {
+	return composite.NewCompositeServiceBasicCommentActionMethodResult()
+}
+
+func basicCommentListMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*composite.CompositeServiceBasicCommentListMethodArgs)
+	realResult := result.(*composite.CompositeServiceBasicCommentListMethodResult)
+	success, err := handler.(composite.CompositeService).BasicCommentListMethod(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newCompositeServiceBasicCommentListMethodArgs() interface{} {
+	return composite.NewCompositeServiceBasicCommentListMethodArgs()
+}
+
+func newCompositeServiceBasicCommentListMethodResult() interface{} {
+	return composite.NewCompositeServiceBasicCommentListMethodResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -126,6 +164,26 @@ func (p *kClient) BasicFeedMethod(ctx context.Context, req *composite.BasicFeedR
 	_args.Req = req
 	var _result composite.CompositeServiceBasicFeedMethodResult
 	if err = p.c.Call(ctx, "BasicFeedMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) BasicCommentActionMethod(ctx context.Context, req *composite.BasicCommentActionRequest) (r *composite.BasicCommentActionResponse, err error) {
+	var _args composite.CompositeServiceBasicCommentActionMethodArgs
+	_args.Req = req
+	var _result composite.CompositeServiceBasicCommentActionMethodResult
+	if err = p.c.Call(ctx, "BasicCommentActionMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) BasicCommentListMethod(ctx context.Context, req *composite.BasicCommentListRequest) (r *composite.BasicCommentListResponse, err error) {
+	var _args composite.CompositeServiceBasicCommentListMethodArgs
+	_args.Req = req
+	var _result composite.CompositeServiceBasicCommentListMethodResult
+	if err = p.c.Call(ctx, "BasicCommentListMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
