@@ -33,6 +33,8 @@ func newUserFavorite(db *gorm.DB, opts ...gen.DOOption) userFavorite {
 	_userFavorite.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_userFavorite.DeletedAt = field.NewField(tableName, "deleted_at")
 	_userFavorite.Id = field.NewUint(tableName, "id")
+	_userFavorite.UserId = field.NewInt64(tableName, "user_id")
+	_userFavorite.VedioId = field.NewInt64(tableName, "vedio_id")
 
 	_userFavorite.fillFieldMap()
 
@@ -48,6 +50,8 @@ type userFavorite struct {
 	UpdatedAt field.Time
 	DeletedAt field.Field
 	Id        field.Uint
+	UserId    field.Int64
+	VedioId   field.Int64
 
 	fieldMap map[string]field.Expr
 }
@@ -69,6 +73,8 @@ func (u *userFavorite) updateTableName(table string) *userFavorite {
 	u.UpdatedAt = field.NewTime(table, "updated_at")
 	u.DeletedAt = field.NewField(table, "deleted_at")
 	u.Id = field.NewUint(table, "id")
+	u.UserId = field.NewInt64(table, "user_id")
+	u.VedioId = field.NewInt64(table, "vedio_id")
 
 	u.fillFieldMap()
 
@@ -93,12 +99,14 @@ func (u *userFavorite) GetFieldByName(fieldName string) (field.OrderExpr, bool) 
 }
 
 func (u *userFavorite) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 5)
+	u.fieldMap = make(map[string]field.Expr, 7)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["created_at"] = u.CreatedAt
 	u.fieldMap["updated_at"] = u.UpdatedAt
 	u.fieldMap["deleted_at"] = u.DeletedAt
 	u.fieldMap["id"] = u.Id
+	u.fieldMap["user_id"] = u.UserId
+	u.fieldMap["vedio_id"] = u.VedioId
 }
 
 func (u userFavorite) clone(db *gorm.DB) userFavorite {
@@ -113,32 +121,48 @@ func (u userFavorite) replaceDB(db *gorm.DB) userFavorite {
 
 type userFavoriteDo struct{ gen.DO }
 
-// where(userId=@userId)
-func (u userFavoriteDo) FindByUserid(userId int) (result model.UserFavorite, err error) {
+// sql(select vedio_id from @@table where user_id = @userId)
+func (u userFavoriteDo) FindByUserid(userId int64) (result model.UserFavorite, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
 	params = append(params, userId)
-	generateSQL.WriteString("userId=? ")
+	generateSQL.WriteString("select vedio_id from user_favorites where user_id = ? ")
 
 	var executeSQL *gorm.DB
 
-	executeSQL = u.UnderlyingDB().Where(generateSQL.String(), params...).Take(&result)
+	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Take(&result)
 	err = executeSQL.Error
 	return
 }
 
-// where(vedioId=@vedioId)
-func (u userFavoriteDo) FindByVedioId(vedioId int) (result model.UserFavorite, err error) {
+// sql(select user_id from @@table where vedio_id = @vedioId)
+func (u userFavoriteDo) FindByVedioid(vedioId int64) (result model.UserFavorite, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
 	params = append(params, vedioId)
-	generateSQL.WriteString("vedioId=? ")
+	generateSQL.WriteString("select user_id from user_favorites where vedio_id = ? ")
 
 	var executeSQL *gorm.DB
 
-	executeSQL = u.UnderlyingDB().Where(generateSQL.String(), params...).Take(&result)
+	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Take(&result)
+	err = executeSQL.Error
+	return
+}
+
+// sql(select * from @@table where vedio_id = @vedioId and user_id = @userId)
+func (u userFavoriteDo) FindByUseridAndVedioid(userId int64, vedioId int64) (err error) {
+	var params []interface{}
+
+	var generateSQL strings.Builder
+	params = append(params, vedioId)
+	params = append(params, userId)
+	generateSQL.WriteString("select * from user_favorites where vedio_id = ? and user_id = ? ")
+
+	var executeSQL *gorm.DB
+
+	executeSQL = u.UnderlyingDB().Exec(generateSQL.String(), params...)
 	err = executeSQL.Error
 	return
 }

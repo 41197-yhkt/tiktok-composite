@@ -35,7 +35,16 @@ func (s *CompositeServiceImpl) BasicFavoriteActionMethod(ctx context.Context, re
 
 // BasicFavoriteListMethod implements the CompositeServiceImpl interface.
 func (s *CompositeServiceImpl) BasicFavoriteListMethod(ctx context.Context, req *composite.BasicFavoriteListRequest) (resp *composite.BasicFavoriteListResponse, err error) {
-	// TODO: Your code here...
+	resp = new(composite.BasicFavoriteListResponse)
+
+	// 检验参数是否符合规范
+	if req.UserId <= 0 {
+		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
+		return resp, nil
+	}
+
+	resp.VedioList, err = service.NewFavoriteListService(ctx).FavoriteList(req)
+	resp.BaseResp = pack.BuildBaseResp(errno.Success)
 	return
 }
 

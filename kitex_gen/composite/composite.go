@@ -2158,7 +2158,8 @@ func (p *BasicFavoriteActionResponse) Field1DeepEqual(src *BaseResp) bool {
 }
 
 type BasicFavoriteListRequest struct {
-	UserId int64 `thrift:"user_id,1,required" frugal:"1,required,i64" json:"user_id"`
+	UserId  int64 `thrift:"user_id,1,required" frugal:"1,required,i64" json:"user_id"`
+	QueryId int64 `thrift:"query_id,2,required" frugal:"2,required,i64" json:"query_id"`
 }
 
 func NewBasicFavoriteListRequest() *BasicFavoriteListRequest {
@@ -2172,12 +2173,20 @@ func (p *BasicFavoriteListRequest) InitDefault() {
 func (p *BasicFavoriteListRequest) GetUserId() (v int64) {
 	return p.UserId
 }
+
+func (p *BasicFavoriteListRequest) GetQueryId() (v int64) {
+	return p.QueryId
+}
 func (p *BasicFavoriteListRequest) SetUserId(val int64) {
 	p.UserId = val
+}
+func (p *BasicFavoriteListRequest) SetQueryId(val int64) {
+	p.QueryId = val
 }
 
 var fieldIDToName_BasicFavoriteListRequest = map[int16]string{
 	1: "user_id",
+	2: "query_id",
 }
 
 func (p *BasicFavoriteListRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -2185,6 +2194,7 @@ func (p *BasicFavoriteListRequest) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetUserId bool = false
+	var issetQueryId bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -2211,6 +2221,17 @@ func (p *BasicFavoriteListRequest) Read(iprot thrift.TProtocol) (err error) {
 					goto SkipFieldError
 				}
 			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetQueryId = true
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -2227,6 +2248,11 @@ func (p *BasicFavoriteListRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetUserId {
 		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetQueryId {
+		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -2256,6 +2282,15 @@ func (p *BasicFavoriteListRequest) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
+func (p *BasicFavoriteListRequest) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.QueryId = v
+	}
+	return nil
+}
+
 func (p *BasicFavoriteListRequest) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("BasicFavoriteListRequest"); err != nil {
@@ -2264,6 +2299,10 @@ func (p *BasicFavoriteListRequest) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
 			goto WriteFieldError
 		}
 
@@ -2302,6 +2341,23 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
+func (p *BasicFavoriteListRequest) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("query_id", thrift.I64, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.QueryId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
 func (p *BasicFavoriteListRequest) String() string {
 	if p == nil {
 		return "<nil>"
@@ -2318,12 +2374,22 @@ func (p *BasicFavoriteListRequest) DeepEqual(ano *BasicFavoriteListRequest) bool
 	if !p.Field1DeepEqual(ano.UserId) {
 		return false
 	}
+	if !p.Field2DeepEqual(ano.QueryId) {
+		return false
+	}
 	return true
 }
 
 func (p *BasicFavoriteListRequest) Field1DeepEqual(src int64) bool {
 
 	if p.UserId != src {
+		return false
+	}
+	return true
+}
+func (p *BasicFavoriteListRequest) Field2DeepEqual(src int64) bool {
+
+	if p.QueryId != src {
 		return false
 	}
 	return true

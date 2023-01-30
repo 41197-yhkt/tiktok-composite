@@ -35,12 +35,22 @@ func main() {
 	initUserFavoriteRpc()
 	// 自己提供 ctx
 	ctx := context.Background()
-	// 定义请求
-	req := &composite.BasicFavoriteActionRequest{VedioId: 1, UserId: 1}
+
 	// 调用 BasicFavoriteActionMethod 方法
-	resp, err := userFavoriteClient.BasicFavoriteActionMethod(ctx, req)
+	// 定义请求
+	// req := &composite.BasicFavoriteActionRequest{VedioId: 1, UserId: 1}
+	// resp, err := userFavoriteClient.BasicFavoriteActionMethod(ctx, req)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println(resp)
+
+	// 调用 BasicFavoriteActionMethod 方法
+	req := &composite.BasicFavoriteListRequest{UserId: 2, QueryId: 1}
+	resp, err := userFavoriteClient.BasicFavoriteListMethod(ctx, req)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(resp)
+	fmt.Println("Call BasicFavoriteListMethod: ", resp)
+
 }

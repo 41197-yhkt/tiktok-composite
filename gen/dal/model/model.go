@@ -6,10 +6,16 @@ import (
 	"gorm.io/gorm"
 )
 
+type User struct {
+	gorm.Model
+	Id   int64  `gorm:"primary_key"`
+	Name string `gorm:"column:name"`
+}
+
 type Vedio struct {
 	gorm.Model
 	Id         uint      `gorm:"primary_key"`
-	AuthorId   string    `gorm:"column:author_id"`
+	AuthorId   int64     `gorm:"column:author_id"`
 	PlayUrl    string    `gorm:"column:play_url"`
 	CoverUrl   string    `gorm:"column:cover_url"`
 	Title      string    `gorm:"column:title"`
@@ -19,7 +25,7 @@ type Vedio struct {
 
 type UserFavorite struct {
 	gorm.Model
-	Id      uint `gorm:"primary_key"`
-	UserId  int  `gorm:"column:user_id"`
-	VedioId int  `gorm:"column:vedio_id"`
+	Id      uint  `gorm:"primary_key"`
+	UserId  int64 `gorm:"column:user_id"`
+	VedioId int64 `gorm:"column:vedio_id"`
 }

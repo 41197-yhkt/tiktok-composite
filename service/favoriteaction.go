@@ -17,7 +17,7 @@ func NewFavoriteActionService(ctx context.Context) *FavoriteActionService {
 func (s *FavoriteActionService) FavoriteAction(req *composite.BasicFavoriteActionRequest) error {
 	userFavoriteDatabase := q.UserFavorite.WithContext(s.ctx)
 
-	userFavoriteData := &model.UserFavorite{UserId: int(req.UserId), VedioId: int(req.VedioId)}
+	userFavoriteData := &model.UserFavorite{UserId: req.UserId, VedioId: req.VedioId}
 
 	return userFavoriteDatabase.Create(userFavoriteData)
 }

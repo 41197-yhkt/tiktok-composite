@@ -35,6 +35,12 @@ func newVedio(db *gorm.DB, opts ...gen.DOOption) vedio {
 	_vedio.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_vedio.DeletedAt = field.NewField(tableName, "deleted_at")
 	_vedio.Id = field.NewUint(tableName, "id")
+	_vedio.AuthorId = field.NewInt64(tableName, "author_id")
+	_vedio.PlayUrl = field.NewString(tableName, "play_url")
+	_vedio.CoverUrl = field.NewString(tableName, "cover_url")
+	_vedio.Title = field.NewString(tableName, "title")
+	_vedio.Created_at = field.NewTime(tableName, "created_at")
+	_vedio.Updated_at = field.NewTime(tableName, "updated_at")
 
 	_vedio.fillFieldMap()
 
@@ -44,12 +50,18 @@ func newVedio(db *gorm.DB, opts ...gen.DOOption) vedio {
 type vedio struct {
 	vedioDo vedioDo
 
-	ALL       field.Asterisk
-	ID        field.Uint
-	CreatedAt field.Time
-	UpdatedAt field.Time
-	DeletedAt field.Field
-	Id        field.Uint
+	ALL        field.Asterisk
+	ID         field.Uint
+	CreatedAt  field.Time
+	UpdatedAt  field.Time
+	DeletedAt  field.Field
+	Id         field.Uint
+	AuthorId   field.Int64
+	PlayUrl    field.String
+	CoverUrl   field.String
+	Title      field.String
+	Created_at field.Time
+	Updated_at field.Time
 
 	fieldMap map[string]field.Expr
 }
@@ -71,6 +83,12 @@ func (v *vedio) updateTableName(table string) *vedio {
 	v.UpdatedAt = field.NewTime(table, "updated_at")
 	v.DeletedAt = field.NewField(table, "deleted_at")
 	v.Id = field.NewUint(table, "id")
+	v.AuthorId = field.NewInt64(table, "author_id")
+	v.PlayUrl = field.NewString(table, "play_url")
+	v.CoverUrl = field.NewString(table, "cover_url")
+	v.Title = field.NewString(table, "title")
+	v.Created_at = field.NewTime(table, "created_at")
+	v.Updated_at = field.NewTime(table, "updated_at")
 
 	v.fillFieldMap()
 
@@ -93,12 +111,18 @@ func (v *vedio) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (v *vedio) fillFieldMap() {
-	v.fieldMap = make(map[string]field.Expr, 5)
+	v.fieldMap = make(map[string]field.Expr, 11)
 	v.fieldMap["id"] = v.ID
 	v.fieldMap["created_at"] = v.CreatedAt
 	v.fieldMap["updated_at"] = v.UpdatedAt
 	v.fieldMap["deleted_at"] = v.DeletedAt
 	v.fieldMap["id"] = v.Id
+	v.fieldMap["author_id"] = v.AuthorId
+	v.fieldMap["play_url"] = v.PlayUrl
+	v.fieldMap["cover_url"] = v.CoverUrl
+	v.fieldMap["title"] = v.Title
+	v.fieldMap["created_at"] = v.Created_at
+	v.fieldMap["updated_at"] = v.Updated_at
 }
 
 func (v vedio) clone(db *gorm.DB) vedio {
@@ -114,7 +138,7 @@ func (v vedio) replaceDB(db *gorm.DB) vedio {
 type vedioDo struct{ gen.DO }
 
 // where(id=@id)
-func (v vedioDo) FindByID(id int) (result model.Vedio, err error) {
+func (v vedioDo) FindByID(id int64) (result model.Vedio, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
