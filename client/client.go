@@ -68,14 +68,22 @@ func main() {
 	// fmt.Println("Call BadicCommentActionMethod to add comment: ", resp)
 
 	// 调用 CommentMethod 方法删除评论
-	var deleteId int64 = 1
-	req := &composite.BasicCommentActionRequest{
-		ActionType: 2,
-		CommentId:  &deleteId,
-	}
-	resp, err := compositeClient.BasicCommentActionMethod(ctx, req)
+	// var deleteId int64 = 1
+	// req := &composite.BasicCommentActionRequest{
+	// 	ActionType: 2,
+	// 	CommentId:  &deleteId,
+	// }
+	// resp, err := compositeClient.BasicCommentActionMethod(ctx, req)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println("Call BadicCommentActionMethod to delete comment: ", resp)
+
+	// 调用 CommentList 获取评论列表
+	req := &composite.BasicCommentListRequest{VedioId: 1}
+	resp, err := compositeClient.BasicCommentListMethod(ctx, req)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Call BadicCommentActionMethod to delete comment: ", resp)
+	fmt.Println("Call BasicCommentListMethod: ", resp)
 }

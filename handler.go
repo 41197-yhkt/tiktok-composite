@@ -75,6 +75,18 @@ func (s *CompositeServiceImpl) BasicCommentActionMethod(ctx context.Context, req
 
 // BasicCommentListMethod implements the CompositeServiceImpl interface.
 func (s *CompositeServiceImpl) BasicCommentListMethod(ctx context.Context, req *composite.BasicCommentListRequest) (resp *composite.BasicCommentListResponse, err error) {
-	// TODO: Your code here...
-	return
+	resp = new(composite.BasicCommentListResponse)
+
+	if req.VedioId <= 0 {
+		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
+		return resp, nil
+	}
+
+	resp.CommentList, err = service.NewCommentListService(ctx).CommentList(req)
+	if err != nil {
+		resp.BaseResp = pack.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.BaseResp = pack.BuildBaseResp(errno.Success)
+	return resp, nil
 }

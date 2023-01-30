@@ -257,11 +257,11 @@ func (p *BaseResp) Field2DeepEqual(src *string) bool {
 }
 
 type User struct {
-	Id            int64   `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
-	Name          string  `thrift:"name,2,required" frugal:"2,required,string" json:"name"`
-	FollowCount   []int64 `thrift:"follow_count,3" frugal:"3,default,list<i64>" json:"follow_count"`
-	FollowerCount *int64  `thrift:"follower_count,4,optional" frugal:"4,optional,i64" json:"follower_count,omitempty"`
-	IsFollow      bool    `thrift:"is_follow,5,required" frugal:"5,required,bool" json:"is_follow"`
+	Id            int64  `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
+	Name          string `thrift:"name,2,required" frugal:"2,required,string" json:"name"`
+	FollowCount   *int64 `thrift:"follow_count,3,optional" frugal:"3,optional,i64" json:"follow_count,omitempty"`
+	FollowerCount *int64 `thrift:"follower_count,4,optional" frugal:"4,optional,i64" json:"follower_count,omitempty"`
+	IsFollow      bool   `thrift:"is_follow,5,required" frugal:"5,required,bool" json:"is_follow"`
 }
 
 func NewUser() *User {
@@ -280,8 +280,13 @@ func (p *User) GetName() (v string) {
 	return p.Name
 }
 
-func (p *User) GetFollowCount() (v []int64) {
-	return p.FollowCount
+var User_FollowCount_DEFAULT int64
+
+func (p *User) GetFollowCount() (v int64) {
+	if !p.IsSetFollowCount() {
+		return User_FollowCount_DEFAULT
+	}
+	return *p.FollowCount
 }
 
 var User_FollowerCount_DEFAULT int64
@@ -302,7 +307,7 @@ func (p *User) SetId(val int64) {
 func (p *User) SetName(val string) {
 	p.Name = val
 }
-func (p *User) SetFollowCount(val []int64) {
+func (p *User) SetFollowCount(val *int64) {
 	p.FollowCount = val
 }
 func (p *User) SetFollowerCount(val *int64) {
@@ -318,6 +323,10 @@ var fieldIDToName_User = map[int16]string{
 	3: "follow_count",
 	4: "follower_count",
 	5: "is_follow",
+}
+
+func (p *User) IsSetFollowCount() bool {
+	return p.FollowCount != nil
 }
 
 func (p *User) IsSetFollowerCount() bool {
@@ -369,7 +378,7 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 				}
 			}
 		case 3:
-			if fieldTypeId == thrift.LIST {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -464,23 +473,10 @@ func (p *User) ReadField2(iprot thrift.TProtocol) error {
 }
 
 func (p *User) ReadField3(iprot thrift.TProtocol) error {
-	_, size, err := iprot.ReadListBegin()
-	if err != nil {
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
-	}
-	p.FollowCount = make([]int64, 0, size)
-	for i := 0; i < size; i++ {
-		var _elem int64
-		if v, err := iprot.ReadI64(); err != nil {
-			return err
-		} else {
-			_elem = v
-		}
-
-		p.FollowCount = append(p.FollowCount, _elem)
-	}
-	if err := iprot.ReadListEnd(); err != nil {
-		return err
+	} else {
+		p.FollowCount = &v
 	}
 	return nil
 }
@@ -583,22 +579,16 @@ WriteFieldEndError:
 }
 
 func (p *User) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("follow_count", thrift.LIST, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteListBegin(thrift.I64, len(p.FollowCount)); err != nil {
-		return err
-	}
-	for _, v := range p.FollowCount {
-		if err := oprot.WriteI64(v); err != nil {
+	if p.IsSetFollowCount() {
+		if err = oprot.WriteFieldBegin("follow_count", thrift.I64, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.FollowCount); err != nil {
 			return err
 		}
-	}
-	if err := oprot.WriteListEnd(); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -688,16 +678,15 @@ func (p *User) Field2DeepEqual(src string) bool {
 	}
 	return true
 }
-func (p *User) Field3DeepEqual(src []int64) bool {
+func (p *User) Field3DeepEqual(src *int64) bool {
 
-	if len(p.FollowCount) != len(src) {
+	if p.FollowCount == src {
+		return true
+	} else if p.FollowCount == nil || src == nil {
 		return false
 	}
-	for i, v := range p.FollowCount {
-		_src := src[i]
-		if v != _src {
-			return false
-		}
+	if *p.FollowCount != *src {
+		return false
 	}
 	return true
 }
@@ -3950,8 +3939,7 @@ func (p *BasicCommentActionResponse) Field2DeepEqual(src *Comment) bool {
 }
 
 type BasicCommentListRequest struct {
-	UserId  int64 `thrift:"user_id,1,required" frugal:"1,required,i64" json:"user_id"`
-	VedioId int64 `thrift:"vedio_id,2,required" frugal:"2,required,i64" json:"vedio_id"`
+	VedioId int64 `thrift:"vedio_id,1,required" frugal:"1,required,i64" json:"vedio_id"`
 }
 
 func NewBasicCommentListRequest() *BasicCommentListRequest {
@@ -3962,30 +3950,21 @@ func (p *BasicCommentListRequest) InitDefault() {
 	*p = BasicCommentListRequest{}
 }
 
-func (p *BasicCommentListRequest) GetUserId() (v int64) {
-	return p.UserId
-}
-
 func (p *BasicCommentListRequest) GetVedioId() (v int64) {
 	return p.VedioId
-}
-func (p *BasicCommentListRequest) SetUserId(val int64) {
-	p.UserId = val
 }
 func (p *BasicCommentListRequest) SetVedioId(val int64) {
 	p.VedioId = val
 }
 
 var fieldIDToName_BasicCommentListRequest = map[int16]string{
-	1: "user_id",
-	2: "vedio_id",
+	1: "vedio_id",
 }
 
 func (p *BasicCommentListRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetUserId bool = false
 	var issetVedioId bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
@@ -4005,17 +3984,6 @@ func (p *BasicCommentListRequest) Read(iprot thrift.TProtocol) (err error) {
 		case 1:
 			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetUserId = true
-			} else {
-				if err = iprot.Skip(fieldTypeId); err != nil {
-					goto SkipFieldError
-				}
-			}
-		case 2:
-			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
 				issetVedioId = true
@@ -4038,13 +4006,8 @@ func (p *BasicCommentListRequest) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetUserId {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
 	if !issetVedioId {
-		fieldId = 2
+		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -4069,15 +4032,6 @@ func (p *BasicCommentListRequest) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.UserId = v
-	}
-	return nil
-}
-
-func (p *BasicCommentListRequest) ReadField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
 		p.VedioId = v
 	}
 	return nil
@@ -4091,10 +4045,6 @@ func (p *BasicCommentListRequest) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
 			goto WriteFieldError
 		}
 
@@ -4117,24 +4067,7 @@ WriteStructEndError:
 }
 
 func (p *BasicCommentListRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("user_id", thrift.I64, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.UserId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-
-func (p *BasicCommentListRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("vedio_id", thrift.I64, 2); err != nil {
+	if err = oprot.WriteFieldBegin("vedio_id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteI64(p.VedioId); err != nil {
@@ -4145,9 +4078,9 @@ func (p *BasicCommentListRequest) writeField2(oprot thrift.TProtocol) (err error
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *BasicCommentListRequest) String() string {
@@ -4163,23 +4096,13 @@ func (p *BasicCommentListRequest) DeepEqual(ano *BasicCommentListRequest) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.UserId) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.VedioId) {
+	if !p.Field1DeepEqual(ano.VedioId) {
 		return false
 	}
 	return true
 }
 
 func (p *BasicCommentListRequest) Field1DeepEqual(src int64) bool {
-
-	if p.UserId != src {
-		return false
-	}
-	return true
-}
-func (p *BasicCommentListRequest) Field2DeepEqual(src int64) bool {
 
 	if p.VedioId != src {
 		return false
