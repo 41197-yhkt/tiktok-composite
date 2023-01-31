@@ -80,10 +80,18 @@ func main() {
 	// fmt.Println("Call BadicCommentActionMethod to delete comment: ", resp)
 
 	// 调用 CommentList 获取评论列表
-	req := &composite.BasicCommentListRequest{VedioId: 1}
-	resp, err := compositeClient.BasicCommentListMethod(ctx, req)
+	// req := &composite.BasicCommentListRequest{VedioId: 1}
+	// resp, err := compositeClient.BasicCommentListMethod(ctx, req)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println("Call BasicCommentListMethod: ", resp)
+
+	// 调用 Feed 获取视屏列表
+	req := &composite.BasicFeedRequest{}
+	resp, err := compositeClient.BasicFeedMethod(ctx, req)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Call BasicCommentListMethod: ", resp)
+	fmt.Println(resp)
 }

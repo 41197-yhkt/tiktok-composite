@@ -1388,6 +1388,7 @@ func (p *BasicFeedRequest) FastRead(buf []byte) (int, error) {
 	var l int
 	var fieldTypeId thrift.TType
 	var fieldId int16
+	var issetUserId bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -1407,6 +1408,21 @@ func (p *BasicFeedRequest) FastRead(buf []byte) (int, error) {
 		case 1:
 			if fieldTypeId == thrift.I64 {
 				l, err = p.FastReadField1(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+				issetUserId = true
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				l, err = p.FastReadField2(buf[offset:])
 				offset += l
 				if err != nil {
 					goto ReadFieldError
@@ -1438,6 +1454,10 @@ func (p *BasicFeedRequest) FastRead(buf []byte) (int, error) {
 		goto ReadStructEndError
 	}
 
+	if !issetUserId {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
 	return offset, nil
 ReadStructBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -1451,9 +1471,25 @@ ReadFieldEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return offset, thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_BasicFeedRequest[fieldId]))
 }
 
 func (p *BasicFeedRequest) FastReadField1(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		p.UserId = v
+
+	}
+	return offset, nil
+}
+
+func (p *BasicFeedRequest) FastReadField2(buf []byte) (int, error) {
 	offset := 0
 
 	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
@@ -1476,6 +1512,7 @@ func (p *BasicFeedRequest) FastWriteNocopy(buf []byte, binaryWriter bthrift.Bina
 	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "BasicFeedRequest")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
+		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
 	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
@@ -1487,6 +1524,7 @@ func (p *BasicFeedRequest) BLength() int {
 	l += bthrift.Binary.StructBeginLength("BasicFeedRequest")
 	if p != nil {
 		l += p.field1Length()
+		l += p.field2Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
@@ -1495,8 +1533,17 @@ func (p *BasicFeedRequest) BLength() int {
 
 func (p *BasicFeedRequest) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "user_id", thrift.I64, 1)
+	offset += bthrift.Binary.WriteI64(buf[offset:], p.UserId)
+
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
+
+func (p *BasicFeedRequest) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
 	if p.IsSetLastestTime() {
-		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "lastest_time", thrift.I64, 1)
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "lastest_time", thrift.I64, 2)
 		offset += bthrift.Binary.WriteI64(buf[offset:], *p.LastestTime)
 
 		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
@@ -1506,8 +1553,17 @@ func (p *BasicFeedRequest) fastWriteField1(buf []byte, binaryWriter bthrift.Bina
 
 func (p *BasicFeedRequest) field1Length() int {
 	l := 0
+	l += bthrift.Binary.FieldBeginLength("user_id", thrift.I64, 1)
+	l += bthrift.Binary.I64Length(p.UserId)
+
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
+
+func (p *BasicFeedRequest) field2Length() int {
+	l := 0
 	if p.IsSetLastestTime() {
-		l += bthrift.Binary.FieldBeginLength("lastest_time", thrift.I64, 1)
+		l += bthrift.Binary.FieldBeginLength("lastest_time", thrift.I64, 2)
 		l += bthrift.Binary.I64Length(*p.LastestTime)
 
 		l += bthrift.Binary.FieldEndLength()

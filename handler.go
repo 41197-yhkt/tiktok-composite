@@ -50,8 +50,18 @@ func (s *CompositeServiceImpl) BasicFavoriteListMethod(ctx context.Context, req 
 
 // BasicFeedMethod implements the CompositeServiceImpl interface.
 func (s *CompositeServiceImpl) BasicFeedMethod(ctx context.Context, req *composite.BasicFeedRequest) (resp *composite.BasicFeedResponse, err error) {
-	// TODO: Your code here...
-	return
+	resp = new(composite.BasicFeedResponse)
+
+	vedioList, nextTime, err := service.NewFeedService(ctx).Feed(req)
+	if err != nil {
+		resp.BaseResp = pack.BuildBaseResp(err)
+		return nil, err
+	}
+
+	resp.VedioList = vedioList
+	resp.NextTime = &nextTime
+	resp.BaseResp = pack.BuildBaseResp(errno.Success)
+	return resp, nil
 }
 
 // BasicCommentActionMethod implements the CompositeServiceImpl interface.
