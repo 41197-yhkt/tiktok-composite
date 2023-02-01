@@ -4,5 +4,6 @@ This repository contains microservices written using Kitex, with a focus on the 
 
 1. Provide a video stream sorted in reverse chronological order by submission time.
 2. Support user like vedio operation.
-3. Support user query for all liked videos.
-
+3. Support user to query for all liked videos.
+4. Support user comment vedio operation.
+5. Support user to query a video comment list.
