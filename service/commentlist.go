@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"tiktok-composite/gen/dal"
 	"tiktok-composite/gen/dal/model"
 	"tiktok-composite/kitex_gen/composite"
@@ -19,29 +18,30 @@ func NewCommentListService(ctx context.Context) *CommentListService {
 func (s *CommentListService) CommentList(req *composite.BasicCommentListRequest) ([]*composite.Comment, error) {
 	userDatabase := q.User.WithContext(s.ctx)
 
-	fmt.Println("根据 vedio_id 选出 comments")
-	// 根据 vedio_id 选出 comments
+	// 1. 从 comments 中根据 vedio_id 查 comments
 	var comments []*model.Comment
 	dal.DB.Where("vedio_id = ?", req.VedioId).Find(&comments)
-	fmt.Println("评论列表如下： ", comments)
 
+	// 2. 对于每个 comments 中的 user_id
 	res := []*composite.Comment{}
 	for _, comment := range comments {
+		// 2.1. users 表中查 Name、 follow_count 和 follower_count
 		commentauthor, err := userDatabase.FindByID(comment.UserId)
 		if err != nil {
 			panic(err)
 		}
 
-		// TODO: FollowCount 和 FollowerCount 计算在 relationship 表中查
-		var followCount, followerCount int64 = 1, 1
+		// 2.2. relationship 表中查 user_id 和 author_id 的关注关系
+		// var isFollow bool
 
+		// 3. 封装
 		res = append(res, &composite.Comment{
-			Id: int64(comment.Id),
+			Id: int64(comment.ID),
 			User: &composite.User{
-				Id:            commentauthor.Id,
+				Id:            int64(commentauthor.ID),
 				Name:          commentauthor.Name,
-				FollowCount:   &followCount,
-				FollowerCount: &followerCount,
+				FollowCount:   &commentauthor.FollowCount,
+				FollowerCount: &commentauthor.FollowerCount,
 				IsFollow:      true,
 			},
 			Content:    comment.Content,
