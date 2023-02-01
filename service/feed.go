@@ -29,6 +29,9 @@ func (s *FeedService) Feed(req *composite.BasicFeedRequest) ([]*composite.Vedio,
 	if err != nil {
 		return nil, -1, err
 	}
+
+	// 3.1. vedio 表中查视频信息
+	// TODO: 接入 vedio 服务
 	vedioIds := pack.VedioIds(eligibleVedios)
 	vedios := make([]*composite.Vedio, 0)
 	for i := 0; i < len(vedioIds); i++ {
@@ -37,7 +40,8 @@ func (s *FeedService) Feed(req *composite.BasicFeedRequest) ([]*composite.Vedio,
 		})
 	}
 
-	// 3. 根据每个 vedio
+	// 3.2. user 表中查作者信息
+	// TODO: 接入 user 服务
 	authorIds := pack.VedioAuthorIds(eligibleVedios)
 	authors := make([]*composite.User, 0)
 	for i := 0; i < len(authorIds); i++ {
