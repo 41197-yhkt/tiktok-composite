@@ -45,15 +45,15 @@ func main() {
 	// }
 	// fmt.Println(resp)
 
-	// 调用 BasicFavoriteActionMethod 方法
-	// req := &composite.BasicFavoriteListRequest{UserId: 2, QueryId: 1}
-	// resp, err := compositeClient.BasicFavoriteListMethod(ctx, req)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// fmt.Println("Call BasicFavoriteListMethod: ", resp)
+	// 调用 BasicFavoriteListMethod 方法
+	req := &composite.BasicFavoriteListRequest{UserId: 2, QueryId: 1}
+	resp, err := compositeClient.BasicFavoriteListMethod(ctx, req)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Call BasicFavoriteListMethod: ", resp)
 
-	// 调用 CommentMethod 方法增加评论
+	// 调用 CommentActionMethod 方法增加评论
 	// commentText := "你好哈哈"
 	// req := &composite.BasicCommentActionRequest{
 	// 	UserId:      1,
@@ -88,10 +88,10 @@ func main() {
 	// fmt.Println("Call BasicCommentListMethod: ", resp)
 
 	// 调用 Feed 获取视屏列表
-	req := &composite.BasicFeedRequest{}
-	resp, err := compositeClient.BasicFeedMethod(ctx, req)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(resp)
+	// req := &composite.BasicFeedRequest{}
+	// resp, err := compositeClient.BasicFeedMethod(ctx, req)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println(resp)
 }

@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"tiktok-composite/gen/dal"
 	"tiktok-composite/gen/dal/model"
 	"tiktok-composite/kitex_gen/composite"
@@ -17,30 +16,40 @@ func NewFavoriteListService(ctx context.Context) *FavoriteListService {
 }
 
 func (s *FavoriteListService) FavoriteList(req *composite.BasicFavoriteListRequest) ([]*composite.Vedio, error) {
+	userDatabase := q.User.WithContext(s.ctx)
 	vedioDatabase := q.Vedio.WithContext(s.ctx)
+	comentDatabase := q.Comment.WithContext(s.ctx)
 	userFavoriteDatabase := q.UserFavorite.WithContext(s.ctx)
 
-	// 先根据 user_id 选出 vedios
+	// 1. 从 user_favorites 中根据 query_id 查 vedio_id
 	var userFavorites []*model.UserFavorite
 	dal.DB.Select("vedio_id").Where("user_id = ?", req.QueryId).Find(&userFavorites)
-	fmt.Println(userFavorites)
 
-	// 根据 vedio_id 查 Vedio
+	// 2. 对于每个 vedio_id
 	res := []*composite.Vedio{}
 	for _, favorite := range userFavorites {
+		// 2.1. vedios 表中查 vedio 具体信息
 		vedio, err := vedioDatabase.FindByID(favorite.VedioId)
 		if err != nil {
 			panic(err)
 		}
 
-		// 查询点赞数目
-		var favoriteCount int64
-		dal.DB.Where("vedio_id = ?", favorite.VedioId).Count(&favoriteCount)
+		// 2.2. comments  表中查评论数
+		commentCount, err := comentDatabase.CountByVedioid(favorite.VedioId)
+		if err != nil {
+			panic(err)
+		}
 
-		// TODO: 查询评论数
-		// var commentCount int 64
+		// 2.3. user_favorites 表中查点赞数
+		favoriteCount, err := userFavoriteDatabase.CountByVedioid(favorite.VedioId)
+		if err != nil {
+			panic(err)
+		}
+		// var favoriteCount int64
+		// dal.DB.Where("vedio_id = ?", favorite.VedioId).Count(&favoriteCount)
 
-		// 查询自己是不是也点了赞
+		// 2.4. user_favorites 表中查是不是自己点赞了
+		// TODO: 这里可以用 EXISTS 优化嘛？
 		var isFavorite bool
 		err = userFavoriteDatabase.FindByUseridAndVedioid(req.UserId, favorite.VedioId)
 		if err != nil {
@@ -49,22 +58,26 @@ func (s *FavoriteListService) FavoriteList(req *composite.BasicFavoriteListReque
 			isFavorite = true
 		}
 
-		// TODO: 查询作者信息
+		// 2.5. users 中获取完整 author 信息
+		author, err := userDatabase.FindByID(vedio.AuthorId)
+		if err != nil {
+			panic(err)
+		}
 
-		// 封装
+		// 3. 封装
 		res = append(res, &composite.Vedio{
 			Id: int64(favorite.VedioId),
 			Author: &composite.User{
-				Id: vedio.AuthorId,
+				Id:            int64(author.ID),
+				FollowCount:   &author.FollowCount,
+				FollowerCount: &author.FollowerCount,
 			},
 			PlayUrl:       vedio.PlayUrl,
 			CoverUrl:      vedio.CoverUrl,
 			FavoriteCount: favoriteCount,
-			// TODO:
-			CommentCount: 1,
-			// 查询点赞视频肯定为 true 吧
-			IsFavorite: isFavorite,
-			Title:      vedio.Title,
+			CommentCount:  commentCount,
+			IsFavorite:    isFavorite,
+			Title:         vedio.Title,
 		})
 	}
 
