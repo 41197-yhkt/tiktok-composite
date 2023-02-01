@@ -118,7 +118,7 @@ func (u userFavorite) replaceDB(db *gorm.DB) userFavorite {
 type userFavoriteDo struct{ gen.DO }
 
 // sql(select vedio_id from @@table where user_id = @userId)
-func (u userFavoriteDo) FindByUserid(userId int64) (result model.UserFavorite, err error) {
+func (u userFavoriteDo) FindByUserid(userId int64) (result []*model.UserFavorite, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -127,13 +127,13 @@ func (u userFavoriteDo) FindByUserid(userId int64) (result model.UserFavorite, e
 
 	var executeSQL *gorm.DB
 
-	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Take(&result)
+	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Find(&result)
 	err = executeSQL.Error
 	return
 }
 
 // sql(select user_id from @@table where vedio_id = @vedioId)
-func (u userFavoriteDo) FindByVedioid(vedioId int64) (result model.UserFavorite, err error) {
+func (u userFavoriteDo) FindByVedioid(vedioId int64) (result []*model.UserFavorite, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -142,7 +142,7 @@ func (u userFavoriteDo) FindByVedioid(vedioId int64) (result model.UserFavorite,
 
 	var executeSQL *gorm.DB
 
-	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Take(&result)
+	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Find(&result)
 	err = executeSQL.Error
 	return
 }
