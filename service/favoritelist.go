@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"tiktok-composite/gen/dal"
 	"tiktok-composite/gen/dal/model"
 	"tiktok-composite/kitex_gen/composite"
 )
@@ -23,7 +22,11 @@ func (s *FavoriteListService) FavoriteList(req *composite.BasicFavoriteListReque
 
 	// 1. 从 user_favorites 中根据 query_id 查 vedio_id
 	var userFavorites []*model.UserFavorite
-	dal.DB.Select("vedio_id").Where("user_id = ?", req.QueryId).Find(&userFavorites)
+	userFavorites, err := userFavoriteDatabase.FindByUserid(req.QueryId)
+	if err != nil {
+		panic(err)
+	}
+	// dal.DB.Select("vedio_id").Where("user_id = ?", req.QueryId).Find(&userFavorites)
 
 	// 2. 对于每个 vedio_id
 	res := []*composite.Vedio{}

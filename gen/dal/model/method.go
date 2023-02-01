@@ -15,16 +15,16 @@ type VedioMethod interface {
 	//where(id=@id)
 	FindByID(id int64) (gen.T, error)
 
-	//sql(select * from @@table where updated_at < @lastTime order by updated_at limit @limit)
-	FindByUpdatedtime(lastTime time.Time, limit int) ([]gen.T, error)
+	//sql(select vedio_id from @@table where updated_at < @lastTime order by updated_at limit @limit)
+	FindByUpdatedtime(lastTime time.Time, limit int) ([]*gen.T, error)
 }
 
 type UserFavoriteMethod interface {
 	//sql(select vedio_id from @@table where user_id = @userId)
-	FindByUserid(userId int64) (gen.T, error)
+	FindByUserid(userId int64) ([]*gen.T, error)
 
 	//sql(select user_id from @@table where vedio_id = @vedioId)
-	FindByVedioid(vedioId int64) (gen.T, error)
+	FindByVedioid(vedioId int64) ([]*gen.T, error)
 
 	//sql(select * from @@table where vedio_id = @vedioId and user_id = @userId)
 	FindByUseridAndVedioid(userId, vedioId int64) error

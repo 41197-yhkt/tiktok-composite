@@ -140,14 +140,14 @@ func (v vedioDo) FindByID(id int64) (result model.Vedio, err error) {
 	return
 }
 
-// sql(select * from @@table where updated_at < @lastTime order by updated_at limit @limit)
-func (v vedioDo) FindByUpdatedtime(lastTime time.Time, limit int) (result []model.Vedio, err error) {
+// sql(select vedio_id from @@table where updated_at < @lastTime order by updated_at limit @limit)
+func (v vedioDo) FindByUpdatedtime(lastTime time.Time, limit int) (result []*model.Vedio, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
 	params = append(params, lastTime)
 	params = append(params, limit)
-	generateSQL.WriteString("select * from vedios where updated_at < ? order by updated_at limit ? ")
+	generateSQL.WriteString("select vedio_id from vedios where updated_at < ? order by updated_at limit ? ")
 
 	var executeSQL *gorm.DB
 
