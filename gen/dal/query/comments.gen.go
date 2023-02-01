@@ -210,6 +210,18 @@ func (c commentDo) CountByVedioid(vedioId int64) (result int64, err error) {
 	return
 }
 
+// sql(SELECT LAST_INSERT_ID())
+func (c commentDo) LastInsertID() (result uint, err error) {
+	var generateSQL strings.Builder
+	generateSQL.WriteString("SELECT LAST_INSERT_ID() ")
+
+	var executeSQL *gorm.DB
+
+	executeSQL = c.UnderlyingDB().Raw(generateSQL.String()).Take(&result)
+	err = executeSQL.Error
+	return
+}
+
 func (c commentDo) Debug() *commentDo {
 	return c.withDO(c.DO.Debug())
 }

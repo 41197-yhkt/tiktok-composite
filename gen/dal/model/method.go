@@ -51,4 +51,7 @@ type CommentMethod interface {
 
 	//sql(select count(*) from @@table where vedio_id = @vedioId)
 	CountByVedioid(vedioId int64) (int64, error)
+
+	//sql(SELECT LAST_INSERT_ID())
+	LastInsertID() (uint, error)
 }
