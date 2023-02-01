@@ -135,7 +135,7 @@ func (c commentDo) FindByID(id int64) (result model.Comment, err error) {
 }
 
 // where(user_id = @userId)
-func (c commentDo) FindByUserid(userId int64) (result model.Comment, err error) {
+func (c commentDo) FindByUserid(userId int64) (result []model.Comment, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -144,13 +144,13 @@ func (c commentDo) FindByUserid(userId int64) (result model.Comment, err error) 
 
 	var executeSQL *gorm.DB
 
-	executeSQL = c.UnderlyingDB().Where(generateSQL.String(), params...).Take(&result)
+	executeSQL = c.UnderlyingDB().Where(generateSQL.String(), params...).Find(&result)
 	err = executeSQL.Error
 	return
 }
 
 // where(vedio_id = @vedioId)
-func (c commentDo) FindByVedioid(vedioId int64) (result model.Comment, err error) {
+func (c commentDo) FindByVedioid(vedioId int64) (result []*model.Comment, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -159,13 +159,13 @@ func (c commentDo) FindByVedioid(vedioId int64) (result model.Comment, err error
 
 	var executeSQL *gorm.DB
 
-	executeSQL = c.UnderlyingDB().Where(generateSQL.String(), params...).Take(&result)
+	executeSQL = c.UnderlyingDB().Where(generateSQL.String(), params...).Find(&result)
 	err = executeSQL.Error
 	return
 }
 
 // where(user_id = @userId and vedio_id = @vedioId)
-func (c commentDo) FindByUseridAndVedioid(userId int64, vedioId int64) (result model.Comment, err error) {
+func (c commentDo) FindByUseridAndVedioid(userId int64, vedioId int64) (result []model.Comment, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -175,7 +175,7 @@ func (c commentDo) FindByUseridAndVedioid(userId int64, vedioId int64) (result m
 
 	var executeSQL *gorm.DB
 
-	executeSQL = c.UnderlyingDB().Where(generateSQL.String(), params...).Take(&result)
+	executeSQL = c.UnderlyingDB().Where(generateSQL.String(), params...).Find(&result)
 	err = executeSQL.Error
 	return
 }
