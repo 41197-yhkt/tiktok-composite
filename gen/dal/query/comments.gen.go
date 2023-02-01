@@ -32,7 +32,6 @@ func newComment(db *gorm.DB, opts ...gen.DOOption) comment {
 	_comment.CreatedAt = field.NewTime(tableName, "created_at")
 	_comment.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_comment.DeletedAt = field.NewField(tableName, "deleted_at")
-	_comment.Id = field.NewUint(tableName, "id")
 	_comment.UserId = field.NewInt64(tableName, "user_id")
 	_comment.VedioId = field.NewInt64(tableName, "vedio_id")
 	_comment.Content = field.NewString(tableName, "content")
@@ -50,7 +49,6 @@ type comment struct {
 	CreatedAt field.Time
 	UpdatedAt field.Time
 	DeletedAt field.Field
-	Id        field.Uint
 	UserId    field.Int64
 	VedioId   field.Int64
 	Content   field.String
@@ -74,7 +72,6 @@ func (c *comment) updateTableName(table string) *comment {
 	c.CreatedAt = field.NewTime(table, "created_at")
 	c.UpdatedAt = field.NewTime(table, "updated_at")
 	c.DeletedAt = field.NewField(table, "deleted_at")
-	c.Id = field.NewUint(table, "id")
 	c.UserId = field.NewInt64(table, "user_id")
 	c.VedioId = field.NewInt64(table, "vedio_id")
 	c.Content = field.NewString(table, "content")
@@ -100,12 +97,11 @@ func (c *comment) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *comment) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 8)
+	c.fieldMap = make(map[string]field.Expr, 7)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
 	c.fieldMap["deleted_at"] = c.DeletedAt
-	c.fieldMap["id"] = c.Id
 	c.fieldMap["user_id"] = c.UserId
 	c.fieldMap["vedio_id"] = c.VedioId
 	c.fieldMap["content"] = c.Content
@@ -195,6 +191,21 @@ func (c commentDo) DeleteById(id int64) (err error) {
 	var executeSQL *gorm.DB
 
 	executeSQL = c.UnderlyingDB().Exec(generateSQL.String(), params...)
+	err = executeSQL.Error
+	return
+}
+
+// sql(select count(*) from @@table where vedio_id = @vedioId)
+func (c commentDo) CountByVedioid(vedioId int64) (result int64, err error) {
+	var params []interface{}
+
+	var generateSQL strings.Builder
+	params = append(params, vedioId)
+	generateSQL.WriteString("select count(*) from comments where vedio_id = ? ")
+
+	var executeSQL *gorm.DB
+
+	executeSQL = c.UnderlyingDB().Raw(generateSQL.String(), params...).Take(&result)
 	err = executeSQL.Error
 	return
 }

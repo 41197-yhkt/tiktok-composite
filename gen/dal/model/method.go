@@ -28,6 +28,9 @@ type UserFavoriteMethod interface {
 
 	//sql(select * from @@table where vedio_id = @vedioId and user_id = @userId)
 	FindByUseridAndVedioid(userId, vedioId int64) error
+
+	//sql(select count(*) from @@table where vedio_id = @vedioId)
+	CountByVedioid(vedioId int64) (int64, error)
 }
 
 type CommentMethod interface {
@@ -45,4 +48,7 @@ type CommentMethod interface {
 
 	// sql(delete from @@table where id = @id)
 	DeleteById(id int64) error
+
+	//sql(select count(*) from @@table where vedio_id = @vedioId)
+	CountByVedioid(vedioId int64) (int64, error)
 }

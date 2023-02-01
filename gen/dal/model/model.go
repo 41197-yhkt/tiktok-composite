@@ -1,38 +1,32 @@
 package model
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
-	Id   int64  `gorm:"primary_key"`
-	Name string `gorm:"column:name"`
+	Name          string `gorm:"column:name"`
+	FollowCount   int64  `gorm:"column:follow_count"`
+	FollowerCount int64  `gorm:"column:follower_count"`
 }
 
 type Vedio struct {
 	gorm.Model
-	Id         uint      `gorm:"primary_key"`
-	AuthorId   int64     `gorm:"column:author_id"`
-	PlayUrl    string    `gorm:"column:play_url"`
-	CoverUrl   string    `gorm:"column:cover_url"`
-	Title      string    `gorm:"column:title"`
-	Created_at time.Time `gorm:"column:created_at"`
-	Updated_at time.Time `gorm:"column:updated_at"`
+	AuthorId int64  `gorm:"column:author_id"`
+	PlayUrl  string `gorm:"column:play_url"`
+	CoverUrl string `gorm:"column:cover_url"`
+	Title    string `gorm:"column:title"`
 }
 
 type UserFavorite struct {
 	gorm.Model
-	Id      uint  `gorm:"primary_key"`
 	UserId  int64 `gorm:"column:user_id"`
 	VedioId int64 `gorm:"column:vedio_id"`
 }
 
 type Comment struct {
 	gorm.Model
-	Id      uint   `gorm:"primary_key"`
 	UserId  int64  `gorm:"column:user_id"`
 	VedioId int64  `gorm:"column:vedio_id"`
 	Content string `gorm:"column:content"`

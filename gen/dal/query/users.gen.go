@@ -32,8 +32,9 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.CreatedAt = field.NewTime(tableName, "created_at")
 	_user.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_user.DeletedAt = field.NewField(tableName, "deleted_at")
-	_user.Id = field.NewInt64(tableName, "id")
 	_user.Name = field.NewString(tableName, "name")
+	_user.FollowCount = field.NewInt64(tableName, "follow_count")
+	_user.FollowerCount = field.NewInt64(tableName, "follower_count")
 
 	_user.fillFieldMap()
 
@@ -43,13 +44,14 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 type user struct {
 	userDo userDo
 
-	ALL       field.Asterisk
-	ID        field.Uint
-	CreatedAt field.Time
-	UpdatedAt field.Time
-	DeletedAt field.Field
-	Id        field.Int64
-	Name      field.String
+	ALL           field.Asterisk
+	ID            field.Uint
+	CreatedAt     field.Time
+	UpdatedAt     field.Time
+	DeletedAt     field.Field
+	Name          field.String
+	FollowCount   field.Int64
+	FollowerCount field.Int64
 
 	fieldMap map[string]field.Expr
 }
@@ -70,8 +72,9 @@ func (u *user) updateTableName(table string) *user {
 	u.CreatedAt = field.NewTime(table, "created_at")
 	u.UpdatedAt = field.NewTime(table, "updated_at")
 	u.DeletedAt = field.NewField(table, "deleted_at")
-	u.Id = field.NewInt64(table, "id")
 	u.Name = field.NewString(table, "name")
+	u.FollowCount = field.NewInt64(table, "follow_count")
+	u.FollowerCount = field.NewInt64(table, "follower_count")
 
 	u.fillFieldMap()
 
@@ -94,13 +97,14 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 6)
+	u.fieldMap = make(map[string]field.Expr, 7)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["created_at"] = u.CreatedAt
 	u.fieldMap["updated_at"] = u.UpdatedAt
 	u.fieldMap["deleted_at"] = u.DeletedAt
-	u.fieldMap["id"] = u.Id
 	u.fieldMap["name"] = u.Name
+	u.fieldMap["follow_count"] = u.FollowCount
+	u.fieldMap["follower_count"] = u.FollowerCount
 }
 
 func (u user) clone(db *gorm.DB) user {
