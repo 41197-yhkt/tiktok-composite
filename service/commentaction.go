@@ -18,7 +18,6 @@ func NewCommentActionService(ctx context.Context) *CommentActionService {
 
 func (s *CommentActionService) CommentAction(req *composite.BasicCommentActionRequest) (*composite.Comment, error) {
 	commentDatabase := q.Comment.WithContext(s.ctx)
-	userDatabase := q.User.WithContext(s.ctx)
 
 	// 1. 判断 ActionType
 	if req.ActionType == 1 {
@@ -41,22 +40,13 @@ func (s *CommentActionService) CommentAction(req *composite.BasicCommentActionRe
 		}
 
 		// 2.3. users 表中查评论作者的信息
-		userInfo, err := userDatabase.FindByID(lastComment.UserId)
-		if err != nil {
-			return nil, err
-		}
+		// TODO: 根据 lastComment.UserId 调用 user 服务接口查询 author 信息
+		author := &composite.User{}
+		author.Id = lastComment.UserId
 
 		// 3. 封装
 		// 自己不能关注自己，所以 isFollow 固定为 false
-		resInfo := pack.Comment(lastComment, &userInfo, false)
-		// resInfo := &composite.Comment{
-		// 	Id: int64(lastComment.ID),
-		// 	User: &composite.User{
-		// 		Id: int64(userInfo.ID),
-		// 	},
-		// 	Content:    lastComment.Content,
-		// 	CreateDate: lastComment.CreatedAt.Format("01-02"),
-		// }
+		resInfo := pack.Comment(lastComment, author, false)
 		return resInfo, nil
 	} else {
 		// 软删除

@@ -6,7 +6,7 @@ import (
 )
 
 // 打包 comment
-func Comment(comment *model.Comment, author *model.User, isFollow bool) *composite.Comment {
+func Comment(comment *model.Comment, author *composite.User, isFollow bool) *composite.Comment {
 	if comment == nil {
 		return nil
 	}
@@ -22,10 +22,10 @@ func Comment(comment *model.Comment, author *model.User, isFollow bool) *composi
 	return &composite.Comment{
 		Id: int64(comment.ID),
 		User: &composite.User{
-			Id:            int64(author.ID),
+			Id:            int64(author.Id),
 			Name:          author.Name,
-			FollowCount:   &author.FollowCount,
-			FollowerCount: &author.FollowerCount,
+			FollowCount:   author.FollowCount,
+			FollowerCount: author.FollowerCount,
 			IsFollow:      isFollow,
 		},
 		Content:    comment.Content,
@@ -34,7 +34,7 @@ func Comment(comment *model.Comment, author *model.User, isFollow bool) *composi
 }
 
 // 打包 comment list
-func Comments(comments []*model.Comment, authors []*model.User, isFollows []bool) []*composite.Comment {
+func Comments(comments []*model.Comment, authors []*composite.User, isFollows []bool) []*composite.Comment {
 	res := make([]*composite.Comment, 0)
 	for i := 0; i < len(comments); i++ {
 		if c := Comment(comments[i], authors[i], isFollows[i]); c != nil {
