@@ -25,9 +25,9 @@ func (s *CommentListService) CommentList(req *composite.BasicCommentListRequest)
 		return nil, err
 	}
 
-	// 2. 对于每个 comments 中的 user_id
+	// 2. 对于每个 comments 中的 user_id users 表中查信息
 	// 2.1. users 表中查信息
-	// TODO: 后续接到 user 服务上
+	// TODO: 后续接到 user 服务上，两个合为一个，并改进 pack.Comments 函数
 	authorIds := pack.AuthorIds(comments)
 	authors := make([]*composite.User, len(authorIds))
 	for i := 0; i < len(authorIds); i++ {

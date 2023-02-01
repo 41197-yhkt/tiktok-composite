@@ -26,6 +26,7 @@ func (s *FavoriteListService) FavoriteList(req *composite.BasicFavoriteListReque
 	}
 
 	// 2. 对于每个 vedio_id
+	// TODO: 接到 user 和 vedio 服务上
 	vedioIds, authorIds := pack.VedioAndVedioAuthorIds(userFavorites)
 	vedios := make([]*composite.Vedio, 0)
 	authors := make([]*composite.User, 0)
