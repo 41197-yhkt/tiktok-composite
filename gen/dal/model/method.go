@@ -38,13 +38,13 @@ type CommentMethod interface {
 	FindByID(id int64) (gen.T, error)
 
 	//where(user_id = @userId)
-	FindByUserid(userId int64) (gen.T, error)
+	FindByUserid(userId int64) ([]gen.T, error)
 
 	//where(vedio_id = @vedioId)
-	FindByVedioid(vedioId int64) (gen.T, error)
+	FindByVedioid(vedioId int64) ([]*gen.T, error)
 
 	//where(user_id = @userId and vedio_id = @vedioId)
-	FindByUseridAndVedioid(userId, vedioId int64) (gen.T, error)
+	FindByUseridAndVedioid(userId, vedioId int64) ([]gen.T, error)
 
 	// sql(delete from @@table where id = @id)
 	DeleteById(id int64) error

@@ -5,6 +5,7 @@ import (
 	"log"
 	"tiktok-composite/gen/dal/model"
 	"tiktok-composite/kitex_gen/composite"
+	"tiktok-composite/pack"
 )
 
 type CommentActionService struct {
@@ -46,14 +47,16 @@ func (s *CommentActionService) CommentAction(req *composite.BasicCommentActionRe
 		}
 
 		// 3. 封装
-		resInfo := &composite.Comment{
-			Id: int64(lastComment.ID),
-			User: &composite.User{
-				Id: int64(userInfo.ID),
-			},
-			Content:    lastComment.Content,
-			CreateDate: lastComment.CreatedAt.Format("01-02"),
-		}
+		// 自己不能关注自己，所以 isFollow 固定为 false
+		resInfo := pack.Comment(lastComment, &userInfo, false)
+		// resInfo := &composite.Comment{
+		// 	Id: int64(lastComment.ID),
+		// 	User: &composite.User{
+		// 		Id: int64(userInfo.ID),
+		// 	},
+		// 	Content:    lastComment.Content,
+		// 	CreateDate: lastComment.CreatedAt.Format("01-02"),
+		// }
 		return resInfo, nil
 	} else {
 		// 软删除
