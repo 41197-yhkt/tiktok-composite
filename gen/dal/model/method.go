@@ -15,7 +15,7 @@ type VedioMethod interface {
 	//where(id=@id)
 	FindByID(id int64) (gen.T, error)
 
-	//sql(select vedio_id from @@table where updated_at < @lastTime order by updated_at limit @limit)
+	//sql(select * from @@table where updated_at < @lastTime order by updated_at limit @limit)
 	FindByUpdatedtime(lastTime time.Time, limit int) ([]*gen.T, error)
 }
 

@@ -29,10 +29,10 @@ func (s *CommentListService) CommentList(req *composite.BasicCommentListRequest)
 	// 2.1. users 表中查信息
 	// TODO: 后续接到 user 服务上
 	authorIds := pack.AuthorIds(comments)
-	authors := make([]*model.User, len(authorIds))
+	authors := make([]*composite.User, len(authorIds))
 	for i := 0; i < len(authorIds); i++ {
-		authors[i] = &model.User{}
-		authors[i].ID = uint(authorIds[i])
+		authors[i] = &composite.User{}
+		authors[i].Id = authorIds[i]
 	}
 
 	// 2.2 relationship 表中查 user_id 和 author_id 的关注关系
