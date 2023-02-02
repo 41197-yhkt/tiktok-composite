@@ -17,7 +17,13 @@ func NewFavoriteActionService(ctx context.Context) *FavoriteActionService {
 func (s *FavoriteActionService) FavoriteAction(req *composite.BasicFavoriteActionRequest) error {
 	userFavoriteDatabase := q.UserFavorite.WithContext(s.ctx)
 
-	userFavoriteData := &model.UserFavorite{UserId: req.UserId, VedioId: req.VedioId}
+	// 1. 判断 ActionType
+	if req.ActionType == 1 {
+		// 2. 增加一条点赞记录
+		return userFavoriteDatabase.Create(&model.UserFavorite{UserId: req.UserId, VedioId: req.VedioId})
+	} else {
+		// 3. 删除点赞记录
+		return userFavoriteDatabase.DeleteByUseridAndVedioid(req.UserId, req.VedioId)
+	}
 
-	return userFavoriteDatabase.Create(userFavoriteData)
 }

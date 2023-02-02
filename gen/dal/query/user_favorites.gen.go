@@ -178,6 +178,22 @@ func (u userFavoriteDo) CountByVedioid(vedioId int64) (result int64, err error) 
 	return
 }
 
+// sql(delete from @@table where user_id = @userId and vedio_id = @vedioId)
+func (u userFavoriteDo) DeleteByUseridAndVedioid(userId int64, vedioId int64) (err error) {
+	var params []interface{}
+
+	var generateSQL strings.Builder
+	params = append(params, userId)
+	params = append(params, vedioId)
+	generateSQL.WriteString("delete from user_favorites where user_id = ? and vedio_id = ? ")
+
+	var executeSQL *gorm.DB
+
+	executeSQL = u.UnderlyingDB().Exec(generateSQL.String(), params...)
+	err = executeSQL.Error
+	return
+}
+
 func (u userFavoriteDo) Debug() *userFavoriteDo {
 	return u.withDO(u.DO.Debug())
 }
