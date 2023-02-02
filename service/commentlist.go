@@ -5,6 +5,8 @@ import (
 	"tiktok-composite/gen/dal/model"
 	"tiktok-composite/kitex_gen/composite"
 	"tiktok-composite/pack"
+
+	"github.com/41197-yhkt/pkg/errno"
 )
 
 type CommentListService struct {
@@ -22,7 +24,7 @@ func (s *CommentListService) CommentList(req *composite.BasicCommentListRequest)
 	var comments []*model.Comment
 	comments, err := commentDatabase.FindByVedioid(req.VedioId)
 	if err != nil {
-		return nil, err
+		return nil, errno.VedioNotExistErr
 	}
 
 	// 2. 对于每个 comments 中的 user_id users 表中查信息

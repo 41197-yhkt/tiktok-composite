@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"log"
 	"tiktok-composite/kitex_gen/composite"
 	"tiktok-composite/pack"
 	"time"
@@ -33,7 +32,6 @@ func (s *FeedService) Feed(req *composite.BasicFeedRequest) ([]*composite.Vedio,
 	// 3.1. vedio 表中查视频信息
 	// TODO: 接入 vedio 服务
 	vedioIds := pack.VedioIds(eligibleVedios)
-	log.Println(vedioIds)
 	vedios := make([]*composite.Vedio, 0)
 	for i := 0; i < len(vedioIds); i++ {
 		vedios = append(vedios, &composite.Vedio{

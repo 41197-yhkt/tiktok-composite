@@ -7,7 +7,7 @@ import (
 
 	"tiktok-composite/pack"
 
-	"github.com/cloudwego/kitex-examples/bizdemo/easy_note/pkg/errno"
+	"github.com/41197-yhkt/pkg/errno"
 )
 
 // CompositeServiceImpl implements the last service interface defined in the IDL.
@@ -18,8 +18,8 @@ func (s *CompositeServiceImpl) BasicFavoriteActionMethod(ctx context.Context, re
 	resp = new(composite.BasicFavoriteActionResponse)
 
 	// 检验参数是否符合规范
-	if req.VedioId <= 0 || req.UserId <= 0 {
-		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
+	if req.VedioId <= 0 {
+		resp.BaseResp = pack.BuildBaseResp(errno.InvalidParams)
 		return resp, nil
 	}
 
@@ -39,7 +39,7 @@ func (s *CompositeServiceImpl) BasicFavoriteListMethod(ctx context.Context, req 
 
 	// 检验参数是否符合规范
 	if req.UserId <= 0 {
-		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
+		resp.BaseResp = pack.BuildBaseResp(errno.UserNotExist)
 		return resp, nil
 	}
 
@@ -70,7 +70,7 @@ func (s *CompositeServiceImpl) BasicCommentActionMethod(ctx context.Context, req
 
 	// 检验参数是否符合规范
 	if (req.ActionType == 1 && (req.VedioId <= 0 || req.UserId <= 0)) || (req.ActionType == 2 && (*req.CommentId <= 0)) {
-		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
+		resp.BaseResp = pack.BuildBaseResp(errno.InvalidParams)
 		return resp, nil
 	}
 
@@ -88,7 +88,7 @@ func (s *CompositeServiceImpl) BasicCommentListMethod(ctx context.Context, req *
 	resp = new(composite.BasicCommentListResponse)
 
 	if req.VedioId <= 0 {
-		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
+		resp.BaseResp = pack.BuildBaseResp(errno.InvalidParams)
 		return resp, nil
 	}
 
