@@ -1,4 +1,4 @@
-module tiktok-composite
+module github.com/41197/tiktok-composite
 
 go 1.19
 

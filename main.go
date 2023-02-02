@@ -3,9 +3,10 @@ package main
 import (
 	"log"
 	"net"
-	"tiktok-composite/gen/dal"
-	composite "tiktok-composite/kitex_gen/composite/compositeservice"
-	"tiktok-composite/service"
+
+	"github.com/41197/tiktok-composite/gen/dal"
+	composite "github.com/41197/tiktok-composite/kitex_gen/composite/compositeservice"
+	"github.com/41197/tiktok-composite/service"
 
 	trace "github.com/41197-yhkt/pkg/trace"
 	"github.com/cloudwego/kitex-examples/bizdemo/easy_note/pkg/constants"

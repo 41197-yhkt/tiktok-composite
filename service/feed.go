@@ -2,9 +2,10 @@ package service
 
 import (
 	"context"
-	"tiktok-composite/kitex_gen/composite"
-	"tiktok-composite/pack"
 	"time"
+
+	"github.com/41197/tiktok-composite/kitex_gen/composite"
+	"github.com/41197/tiktok-composite/pack"
 )
 
 type FeedService struct {

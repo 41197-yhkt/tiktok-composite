@@ -3,9 +3,10 @@ package service
 import (
 	"context"
 	"log"
-	"tiktok-composite/gen/dal/model"
-	"tiktok-composite/kitex_gen/composite"
-	"tiktok-composite/pack"
+
+	"github.com/41197/tiktok-composite/gen/dal/model"
+	"github.com/41197/tiktok-composite/kitex_gen/composite"
+	"github.com/41197/tiktok-composite/pack"
 
 	"github.com/41197-yhkt/pkg/errno"
 )

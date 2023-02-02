@@ -1,8 +1,8 @@
 package pack
 
 import (
-	"tiktok-composite/gen/dal/model"
-	"tiktok-composite/kitex_gen/composite"
+	"github.com/41197/tiktok-composite/gen/dal/model"
+	"github.com/41197/tiktok-composite/kitex_gen/composite"
 )
 
 // 打包 comment
