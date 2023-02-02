@@ -9,7 +9,7 @@ import (
 
 // BuildBaseResp build baseResp from error
 func BuildBaseResp(err error) *composite.BaseResp {
-	if err == nil {
+	if err == nil || err == errno.Success {
 		return baseResp(*errno.Success)
 	}
 
