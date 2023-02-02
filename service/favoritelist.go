@@ -5,6 +5,8 @@ import (
 	"tiktok-composite/gen/dal/model"
 	"tiktok-composite/kitex_gen/composite"
 	"tiktok-composite/pack"
+
+	"github.com/41197-yhkt/pkg/errno"
 )
 
 type FavoriteListService struct {
@@ -22,7 +24,7 @@ func (s *FavoriteListService) FavoriteList(req *composite.BasicFavoriteListReque
 	var userFavorites []*model.UserFavorite
 	userFavorites, err := userFavoriteDatabase.FindByUserid(req.QueryId)
 	if err != nil {
-		panic(err)
+		return nil, errno.UserNotExist
 	}
 
 	// 2. 对于每个 vedio_id

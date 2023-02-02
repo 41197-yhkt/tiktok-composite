@@ -6,6 +6,8 @@ import (
 	"tiktok-composite/gen/dal/model"
 	"tiktok-composite/kitex_gen/composite"
 	"tiktok-composite/pack"
+
+	"github.com/41197-yhkt/pkg/errno"
 )
 
 type CommentActionService struct {
@@ -58,7 +60,7 @@ func (s *CommentActionService) CommentAction(req *composite.BasicCommentActionRe
 		// err := commentDatabase.DeleteById(*req.CommentId)
 
 		if err != nil {
-			return nil, err
+			return nil, errno.CommentNotExistErr
 		}
 		log.Println(resInfo)
 		return nil, err

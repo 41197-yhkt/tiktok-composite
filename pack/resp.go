@@ -4,13 +4,13 @@ import (
 	"errors"
 	"tiktok-composite/kitex_gen/composite"
 
-	"github.com/cloudwego/kitex-examples/bizdemo/easy_note/pkg/errno"
+	"github.com/41197-yhkt/pkg/errno"
 )
 
 // BuildBaseResp build baseResp from error
 func BuildBaseResp(err error) *composite.BaseResp {
 	if err == nil {
-		return baseResp(errno.Success)
+		return baseResp(*errno.Success)
 	}
 
 	e := errno.ErrNo{}
@@ -18,10 +18,9 @@ func BuildBaseResp(err error) *composite.BaseResp {
 		return baseResp(e)
 	}
 
-	s := errno.ServiceErr.WithMessage(err.Error())
-	return baseResp(s)
+	return baseResp(*errno.ServerError)
 }
 
 func baseResp(err errno.ErrNo) *composite.BaseResp {
-	return &composite.BaseResp{StatusCode: int32(err.ErrCode), StatusMsg: &err.ErrMsg}
+	return &composite.BaseResp{StatusCode: int32(err.Code), StatusMsg: &err.Msg}
 }
