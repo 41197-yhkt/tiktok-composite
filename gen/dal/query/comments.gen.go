@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"tiktok-composite/gen/dal/model"
+	"github.com/41197/tiktok-composite/gen/dal/model"
 )
 
 func newComment(db *gorm.DB, opts ...gen.DOOption) comment {

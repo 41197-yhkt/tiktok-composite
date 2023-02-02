@@ -3,8 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"tiktok-composite/kitex_gen/composite"
-	"tiktok-composite/kitex_gen/composite/compositeservice"
+
+	"github.com/41197/tiktok-composite/kitex_gen/composite"
+	"github.com/41197/tiktok-composite/kitex_gen/composite/compositeservice"
 
 	"github.com/cloudwego/kitex-examples/bizdemo/easy_note/pkg/constants"
 	"github.com/cloudwego/kitex/client"

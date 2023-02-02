@@ -1,8 +1,8 @@
 package service
 
 import (
-	"tiktok-composite/gen/dal"
-	"tiktok-composite/gen/dal/query"
+	"github.com/41197/tiktok-composite/gen/dal"
+	"github.com/41197/tiktok-composite/gen/dal/query"
 )
 
 var q *query.Query

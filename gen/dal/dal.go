@@ -2,7 +2,8 @@ package dal
 
 import (
 	"sync"
-	"tiktok-composite/gen/dal/model"
+
+	"github.com/41197/tiktok-composite/gen/dal/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

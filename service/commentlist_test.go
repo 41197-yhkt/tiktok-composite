@@ -3,7 +3,8 @@ package service
 import (
 	"context"
 	"testing"
-	"tiktok-composite/kitex_gen/composite"
+
+	"github.com/41197/tiktok-composite/kitex_gen/composite"
 )
 
 func TestCommentList(t *testing.T) {
