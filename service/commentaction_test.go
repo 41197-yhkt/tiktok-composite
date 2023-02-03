@@ -65,3 +65,28 @@ func TestCommentAction(t *testing.T) {
 	}
 	t.Log(resp.Comment)
 }
+
+func TestCommentActionInvalidParam(t *testing.T) {
+	compositeClient := setupClient()
+	ctx := context.Background()
+
+	// 定义评论请求
+	var req *composite.BasicCommentActionRequest
+	// 评论测试
+	commentText := "你好哈哈"
+	req = &composite.BasicCommentActionRequest{
+		UserId:      -10086,
+		VedioId:     -20086,
+		ActionType:  1,
+		CommentText: &commentText,
+	}
+	resp, err := compositeClient.BasicCommentActionMethod(ctx, req)
+	if err != nil {
+		t.Error(err)
+	}
+	if resp.BaseResp.StatusCode != 1001 {
+		t.Errorf("Error Code: %v, Error Message: %v", resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
+	}
+	t.Log(resp.Comment)
+
+}

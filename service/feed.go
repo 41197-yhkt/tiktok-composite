@@ -43,13 +43,15 @@ func (s *FeedService) Feed(req *composite.BasicFeedRequest) ([]*composite.Vedio,
 	// 3.2. user 表中查作者信息
 	// TODO: 接入 user 服务
 	authorIds := pack.VedioAuthorIds(eligibleVedios)
-	authors := make([]*composite.User, len(vedioIds))
+	authors := make([]*composite.User, len(authorIds))
 	for i := 0; i < len(authorIds); i++ {
 		authors[i] = &composite.User{}
 		authors[i].Id = authorIds[i]
 	}
 
 	res := pack.Vedios(vedios, authors)
-	return res, eligibleVedios[0].UpdatedAt.Unix(), nil
-
+	if len(eligibleVedios) > 0 {
+		return res, eligibleVedios[0].UpdatedAt.Unix(), nil
+	}
+	return res, lastest_time.Unix(), nil
 }

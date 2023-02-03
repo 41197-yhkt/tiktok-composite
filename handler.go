@@ -39,8 +39,8 @@ func (s *CompositeServiceImpl) BasicFavoriteListMethod(ctx context.Context, req 
 	resp = new(composite.BasicFavoriteListResponse)
 
 	// 检验参数是否符合规范
-	if req.UserId <= 0 {
-		resp.BaseResp = pack.BuildBaseResp(errno.UserNotExist)
+	if req.UserId <= 0 || req.QueryId <= 0 {
+		resp.BaseResp = pack.BuildBaseResp(errno.InvalidParams)
 		return resp, nil
 	}
 
