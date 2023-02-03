@@ -14,9 +14,9 @@ func BuildBaseResp(err error) *composite.BaseResp {
 		return baseResp(*errno.Success)
 	}
 
-	e := errno.ErrNo{}
+	e := &errno.ErrNo{}
 	if errors.As(err, &e) {
-		return baseResp(e)
+		return baseResp(*e)
 	}
 
 	return baseResp(*errno.ServerError)
