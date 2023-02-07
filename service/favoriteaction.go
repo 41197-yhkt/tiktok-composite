@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	"github.com/41197/tiktok-composite/gen/dal/model"
-	"github.com/41197/tiktok-composite/kitex_gen/composite"
+	"github.com/41197-yhkt/tiktok-composite/gen/dal/model"
+	"github.com/41197-yhkt/tiktok-composite/kitex_gen/composite"
 )
 
 type FavoriteActionService struct {
@@ -21,10 +21,10 @@ func (s *FavoriteActionService) FavoriteAction(req *composite.BasicFavoriteActio
 	// 1. 判断 ActionType
 	if req.ActionType == 1 {
 		// 2. 增加一条点赞记录
-		return userFavoriteDatabase.Create(&model.UserFavorite{UserId: req.UserId, VedioId: req.VedioId})
+		return userFavoriteDatabase.Create(&model.UserFavorite{UserId: req.UserId, VideoId: req.VideoId})
 	} else {
 		// 3. 删除点赞记录
-		return userFavoriteDatabase.DeleteByUseridAndVedioid(req.UserId, req.VedioId)
+		return userFavoriteDatabase.DeleteByUseridAndVideoid(req.UserId, req.VideoId)
 	}
 
 }

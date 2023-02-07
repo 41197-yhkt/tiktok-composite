@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/41197/tiktok-composite/kitex_gen/composite"
-	"github.com/41197/tiktok-composite/kitex_gen/composite/compositeservice"
+	"github.com/41197-yhkt/tiktok-composite/kitex_gen/composite"
+	"github.com/41197-yhkt/tiktok-composite/kitex_gen/composite/compositeservice"
 
 	"github.com/cloudwego/kitex-examples/bizdemo/easy_note/pkg/constants"
 	"github.com/cloudwego/kitex/client"
@@ -38,7 +38,7 @@ func TestCommentAction(t *testing.T) {
 	commentText := "你好哈哈"
 	req = &composite.BasicCommentActionRequest{
 		UserId:      10086,
-		VedioId:     20086,
+		VideoId:     20086,
 		ActionType:  1,
 		CommentText: &commentText,
 	}
@@ -76,7 +76,7 @@ func TestCommentActionInvalidParam(t *testing.T) {
 	commentText := "你好哈哈"
 	req = &composite.BasicCommentActionRequest{
 		UserId:      -10086,
-		VedioId:     -20086,
+		VideoId:     -20086,
 		ActionType:  1,
 		CommentText: &commentText,
 	}

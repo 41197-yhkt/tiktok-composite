@@ -11,7 +11,7 @@ type User struct {
 	FollowerCount int64  `gorm:"column:follower_count"`
 }
 
-type Vedio struct {
+type Video struct {
 	gorm.Model
 	AuthorId int64  `gorm:"column:author_id"`
 	PlayUrl  string `gorm:"column:play_url"`
@@ -22,12 +22,12 @@ type Vedio struct {
 type UserFavorite struct {
 	gorm.Model
 	UserId  int64 `gorm:"column:user_id"`
-	VedioId int64 `gorm:"column:vedio_id"`
+	VideoId int64 `gorm:"column:video_id"`
 }
 
 type Comment struct {
 	gorm.Model
 	UserId  int64  `gorm:"column:user_id"`
-	VedioId int64  `gorm:"column:vedio_id"`
+	VideoId int64  `gorm:"column:video_id"`
 	Content string `gorm:"column:content"`
 }

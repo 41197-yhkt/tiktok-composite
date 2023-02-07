@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/41197/tiktok-composite/kitex_gen/composite"
-	"github.com/41197/tiktok-composite/kitex_gen/composite/compositeservice"
+	"github.com/41197-yhkt/tiktok-composite/kitex_gen/composite"
+	"github.com/41197-yhkt/tiktok-composite/kitex_gen/composite/compositeservice"
 
 	"github.com/cloudwego/kitex-examples/bizdemo/easy_note/pkg/constants"
 	"github.com/cloudwego/kitex/client"
@@ -39,7 +39,7 @@ func main() {
 
 	// 调用 BasicFavoriteActionMethod 方法
 	// 定义请求
-	// req := &composite.BasicFavoriteActionRequest{VedioId: 1, UserId: 1}
+	// req := &composite.BasicFavoriteActionRequest{VideoId: 1, UserId: 1}
 	// resp, err := compositeClient.BasicFavoriteActionMethod(ctx, req)
 	// if err != nil {
 	// 	panic(err)
@@ -58,7 +58,7 @@ func main() {
 	// commentText := "你好哈哈"
 	// req := &composite.BasicCommentActionRequest{
 	// 	UserId:      1,
-	// 	VedioId:     2,
+	// 	VideoId:     2,
 	// 	ActionType:  1,
 	// 	CommentText: &commentText,
 	// }
@@ -81,7 +81,7 @@ func main() {
 	// fmt.Println("Call BadicCommentActionMethod to delete comment: ", resp)
 
 	// 调用 CommentList 获取评论列表
-	// req := &composite.BasicCommentListRequest{VedioId: 1}
+	// req := &composite.BasicCommentListRequest{VideoId: 1}
 	// resp, err := compositeClient.BasicCommentListMethod(ctx, req)
 	// if err != nil {
 	// 	panic(err)

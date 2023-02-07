@@ -4,11 +4,13 @@ import (
 	"context"
 	"log"
 
-	"github.com/41197/tiktok-composite/gen/dal/model"
-	"github.com/41197/tiktok-composite/kitex_gen/composite"
-	"github.com/41197/tiktok-composite/pack"
+	"github.com/41197-yhkt/tiktok-composite/gen/dal/model"
+	"github.com/41197-yhkt/tiktok-composite/kitex_gen/composite"
+	"github.com/41197-yhkt/tiktok-composite/pack"
+	"github.com/41197-yhkt/tiktok-composite/rpc"
 
 	"github.com/41197-yhkt/pkg/errno"
+	"github.com/41197-yhkt/tiktok-user/kitex_gen/user"
 )
 
 type CommentActionService struct {
@@ -27,7 +29,7 @@ func (s *CommentActionService) CommentAction(req *composite.BasicCommentActionRe
 		// 2.1. 创建 Comment 数据模型，插入 comments 表中
 		commentData := &model.Comment{
 			UserId:  req.UserId,
-			VedioId: req.VedioId,
+			VideoId: req.VideoId,
 			Content: *req.CommentText,
 		}
 
@@ -43,9 +45,10 @@ func (s *CommentActionService) CommentAction(req *composite.BasicCommentActionRe
 		}
 
 		// 2.3. users 表中查评论作者的信息
-		// TODO: 根据 lastComment.UserId 调用 user 服务接口查询 author 信息
-		author := &composite.User{}
-		author.Id = lastComment.UserId
+		author, err := rpc.GetUser(s.ctx, &user.CompGetUserRequest{UserId: req.UserId, TargetUserId: lastComment.UserId})
+		if err != nil {
+			return nil, err
+		}
 
 		// 3. 封装
 		// 自己不能关注自己，所以 isFollow 固定为 false

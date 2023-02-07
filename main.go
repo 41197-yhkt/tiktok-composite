@@ -4,9 +4,10 @@ import (
 	"log"
 	"net"
 
-	"github.com/41197/tiktok-composite/gen/dal"
-	composite "github.com/41197/tiktok-composite/kitex_gen/composite/compositeservice"
-	"github.com/41197/tiktok-composite/service"
+	"github.com/41197-yhkt/tiktok-composite/gen/dal"
+	composite "github.com/41197-yhkt/tiktok-composite/kitex_gen/composite/compositeservice"
+	"github.com/41197-yhkt/tiktok-composite/rpc"
+	"github.com/41197-yhkt/tiktok-composite/service"
 
 	trace "github.com/41197-yhkt/pkg/trace"
 	"github.com/cloudwego/kitex-examples/bizdemo/easy_note/pkg/constants"
@@ -19,6 +20,7 @@ import (
 func Init() {
 	dal.Init()
 	service.Init()
+	rpc.InitRPC()
 	trace.InitJaeger("kitex-server")
 }
 

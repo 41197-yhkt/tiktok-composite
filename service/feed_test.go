@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/41197/tiktok-composite/kitex_gen/composite"
+	"github.com/41197-yhkt/tiktok-composite/kitex_gen/composite"
 )
 
 func TestFeed(t *testing.T) {
@@ -24,10 +24,10 @@ func TestFeed(t *testing.T) {
 	if resp.BaseResp.StatusCode != 0 {
 		t.Errorf("Error Code: %v, Error Message: %v", resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
-	t.Logf("Favorite List: %v", resp.VedioList)
+	t.Logf("Favorite List: %v", resp.VideoList)
 }
 
-func TestFeedNoEligebleVedios(t *testing.T) {
+func TestFeedNoEligebleVideos(t *testing.T) {
 	compositeClient := setupClient()
 	ctx := context.Background()
 
@@ -45,5 +45,5 @@ func TestFeedNoEligebleVedios(t *testing.T) {
 	if resp.BaseResp.StatusCode != 0 {
 		t.Errorf("Error Code: %v, Error Message: %v", resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
-	t.Logf("Favorite List: %v", resp.VedioList)
+	t.Logf("Favorite List: %v", resp.VideoList)
 }

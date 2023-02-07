@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/41197/tiktok-composite/kitex_gen/composite"
+	"github.com/41197-yhkt/tiktok-composite/kitex_gen/composite"
 )
 
 func TestCommentList(t *testing.T) {
@@ -15,7 +15,7 @@ func TestCommentList(t *testing.T) {
 	var req *composite.BasicCommentListRequest
 	// 获取评论列表测试
 	req = &composite.BasicCommentListRequest{
-		VedioId: 1,
+		VideoId: 20086,
 	}
 	resp, err := compositeClient.BasicCommentListMethod(ctx, req)
 	if err != nil {
@@ -35,7 +35,7 @@ func TestCommentListInvalidParam(t *testing.T) {
 	var req *composite.BasicCommentListRequest
 	// 获取评论列表测试
 	req = &composite.BasicCommentListRequest{
-		VedioId: -1,
+		VideoId: -1,
 	}
 	resp, err := compositeClient.BasicCommentListMethod(ctx, req)
 	if err != nil {
