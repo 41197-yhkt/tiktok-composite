@@ -1,22 +1,16 @@
 package pack
 
 import (
-	"github.com/41197/tiktok-composite/gen/dal/model"
-	"github.com/41197/tiktok-composite/kitex_gen/composite"
+	"github.com/41197-yhkt/tiktok-user/kitex_gen/user"
+
+	"github.com/41197-yhkt/tiktok-composite/gen/dal/model"
+	"github.com/41197-yhkt/tiktok-composite/kitex_gen/composite"
 )
 
 // 打包 comment
-func Comment(comment *model.Comment, author *composite.User, isFollow bool) *composite.Comment {
+func Comment(comment *model.Comment, author *user.User, isFollow bool) *composite.Comment {
 	if comment == nil {
 		return nil
-	}
-	if author == nil {
-		return &composite.Comment{
-			Id:         int64(comment.ID),
-			User:       nil,
-			Content:    comment.Content,
-			CreateDate: comment.CreatedAt.Format("01-02"),
-		}
 	}
 
 	return &composite.Comment{
@@ -34,7 +28,7 @@ func Comment(comment *model.Comment, author *composite.User, isFollow bool) *com
 }
 
 // 打包 comment list
-func Comments(comments []*model.Comment, authors []*composite.User, isFollows []bool) []*composite.Comment {
+func Comments(comments []*model.Comment, authors []*user.User, isFollows []bool) []*composite.Comment {
 	res := make([]*composite.Comment, 0)
 	for i := 0; i < len(comments); i++ {
 		if c := Comment(comments[i], authors[i], isFollows[i]); c != nil {

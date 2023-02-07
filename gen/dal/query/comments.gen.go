@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/41197/tiktok-composite/gen/dal/model"
+	"github.com/41197-yhkt/tiktok-composite/gen/dal/model"
 )
 
 func newComment(db *gorm.DB, opts ...gen.DOOption) comment {
@@ -33,7 +33,7 @@ func newComment(db *gorm.DB, opts ...gen.DOOption) comment {
 	_comment.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_comment.DeletedAt = field.NewField(tableName, "deleted_at")
 	_comment.UserId = field.NewInt64(tableName, "user_id")
-	_comment.VedioId = field.NewInt64(tableName, "vedio_id")
+	_comment.VideoId = field.NewInt64(tableName, "video_id")
 	_comment.Content = field.NewString(tableName, "content")
 
 	_comment.fillFieldMap()
@@ -50,7 +50,7 @@ type comment struct {
 	UpdatedAt field.Time
 	DeletedAt field.Field
 	UserId    field.Int64
-	VedioId   field.Int64
+	VideoId   field.Int64
 	Content   field.String
 
 	fieldMap map[string]field.Expr
@@ -73,7 +73,7 @@ func (c *comment) updateTableName(table string) *comment {
 	c.UpdatedAt = field.NewTime(table, "updated_at")
 	c.DeletedAt = field.NewField(table, "deleted_at")
 	c.UserId = field.NewInt64(table, "user_id")
-	c.VedioId = field.NewInt64(table, "vedio_id")
+	c.VideoId = field.NewInt64(table, "video_id")
 	c.Content = field.NewString(table, "content")
 
 	c.fillFieldMap()
@@ -103,7 +103,7 @@ func (c *comment) fillFieldMap() {
 	c.fieldMap["updated_at"] = c.UpdatedAt
 	c.fieldMap["deleted_at"] = c.DeletedAt
 	c.fieldMap["user_id"] = c.UserId
-	c.fieldMap["vedio_id"] = c.VedioId
+	c.fieldMap["video_id"] = c.VideoId
 	c.fieldMap["content"] = c.Content
 }
 
@@ -149,13 +149,13 @@ func (c commentDo) FindByUserid(userId int64) (result []model.Comment, err error
 	return
 }
 
-// where(vedio_id = @vedioId)
-func (c commentDo) FindByVedioid(vedioId int64) (result []*model.Comment, err error) {
+// where(video_id = @videoId)
+func (c commentDo) FindByVideoid(videoId int64) (result []*model.Comment, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
-	params = append(params, vedioId)
-	generateSQL.WriteString("vedio_id = ? ")
+	params = append(params, videoId)
+	generateSQL.WriteString("video_id = ? ")
 
 	var executeSQL *gorm.DB
 
@@ -164,14 +164,14 @@ func (c commentDo) FindByVedioid(vedioId int64) (result []*model.Comment, err er
 	return
 }
 
-// where(user_id = @userId and vedio_id = @vedioId)
-func (c commentDo) FindByUseridAndVedioid(userId int64, vedioId int64) (result []model.Comment, err error) {
+// where(user_id = @userId and video_id = @videoId)
+func (c commentDo) FindByUseridAndVideoid(userId int64, videoId int64) (result []model.Comment, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
 	params = append(params, userId)
-	params = append(params, vedioId)
-	generateSQL.WriteString("user_id = ? and vedio_id = ? ")
+	params = append(params, videoId)
+	generateSQL.WriteString("user_id = ? and video_id = ? ")
 
 	var executeSQL *gorm.DB
 
@@ -195,13 +195,13 @@ func (c commentDo) DeleteById(id int64) (err error) {
 	return
 }
 
-// sql(select count(*) from @@table where vedio_id = @vedioId)
-func (c commentDo) CountByVedioid(vedioId int64) (result int64, err error) {
+// sql(select count(*) from @@table where video_id = @videoId)
+func (c commentDo) CountByVideoid(videoId int64) (result int64, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
-	params = append(params, vedioId)
-	generateSQL.WriteString("select count(*) from comments where vedio_id = ? ")
+	params = append(params, videoId)
+	generateSQL.WriteString("select count(*) from comments where video_id = ? ")
 
 	var executeSQL *gorm.DB
 

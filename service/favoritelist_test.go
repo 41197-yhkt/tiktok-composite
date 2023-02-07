@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/41197/tiktok-composite/kitex_gen/composite"
+	"github.com/41197-yhkt/tiktok-composite/kitex_gen/composite"
 )
 
 func TestFavoriteList(t *testing.T) {
@@ -22,7 +22,7 @@ func TestFavoriteList(t *testing.T) {
 	if resp.BaseResp.StatusCode != 0 {
 		t.Errorf("Error Code: %v, Error Message: %v", resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
-	t.Logf("Favorite List: %v", resp.VedioList)
+	t.Logf("Favorite List: %v", resp.VideoList)
 }
 
 func TestFavoriteListInvalidParam(t *testing.T) {
@@ -40,5 +40,5 @@ func TestFavoriteListInvalidParam(t *testing.T) {
 	if resp.BaseResp.StatusCode != 1001 {
 		t.Errorf("Error Code: %v, Error Message: %v", resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
-	t.Logf("Favorite List: %v", resp.VedioList)
+	t.Logf("Favorite List: %v", resp.VideoList)
 }

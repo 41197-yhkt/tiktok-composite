@@ -20,7 +20,7 @@ var (
 	Comment      *comment
 	User         *user
 	UserFavorite *userFavorite
-	Vedio        *vedio
+	Video        *video
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
@@ -28,7 +28,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Comment = &Q.Comment
 	User = &Q.User
 	UserFavorite = &Q.UserFavorite
-	Vedio = &Q.Vedio
+	Video = &Q.Video
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
@@ -37,7 +37,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Comment:      newComment(db, opts...),
 		User:         newUser(db, opts...),
 		UserFavorite: newUserFavorite(db, opts...),
-		Vedio:        newVedio(db, opts...),
+		Video:        newVideo(db, opts...),
 	}
 }
 
@@ -47,7 +47,7 @@ type Query struct {
 	Comment      comment
 	User         user
 	UserFavorite userFavorite
-	Vedio        vedio
+	Video        video
 }
 
 func (q *Query) Available() bool { return q.db != nil }
@@ -58,7 +58,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Comment:      q.Comment.clone(db),
 		User:         q.User.clone(db),
 		UserFavorite: q.UserFavorite.clone(db),
-		Vedio:        q.Vedio.clone(db),
+		Video:        q.Video.clone(db),
 	}
 }
 
@@ -76,7 +76,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Comment:      q.Comment.replaceDB(db),
 		User:         q.User.replaceDB(db),
 		UserFavorite: q.UserFavorite.replaceDB(db),
-		Vedio:        q.Vedio.replaceDB(db),
+		Video:        q.Video.replaceDB(db),
 	}
 }
 
@@ -84,7 +84,7 @@ type queryCtx struct {
 	Comment      *commentDo
 	User         *userDo
 	UserFavorite *userFavoriteDo
-	Vedio        *vedioDo
+	Video        *videoDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
@@ -92,7 +92,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Comment:      q.Comment.WithContext(ctx),
 		User:         q.User.WithContext(ctx),
 		UserFavorite: q.UserFavorite.WithContext(ctx),
-		Vedio:        q.Vedio.WithContext(ctx),
+		Video:        q.Video.WithContext(ctx),
 	}
 }
 

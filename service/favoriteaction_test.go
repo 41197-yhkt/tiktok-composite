@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/41197/tiktok-composite/kitex_gen/composite"
+	"github.com/41197-yhkt/tiktok-composite/kitex_gen/composite"
 )
 
 func TestFavoriteAction(t *testing.T) {
@@ -14,7 +14,7 @@ func TestFavoriteAction(t *testing.T) {
 	// 定义点赞请求
 	var req *composite.BasicFavoriteActionRequest
 	// 点赞测试
-	req = &composite.BasicFavoriteActionRequest{VedioId: 5, UserId: 1, ActionType: 1}
+	req = &composite.BasicFavoriteActionRequest{VideoId: 5, UserId: 1, ActionType: 1}
 	resp, err := compositeClient.BasicFavoriteActionMethod(ctx, req)
 	if err != nil {
 		t.Error(err)
@@ -24,7 +24,7 @@ func TestFavoriteAction(t *testing.T) {
 	}
 
 	// 取消点赞测试
-	req = &composite.BasicFavoriteActionRequest{VedioId: 5, UserId: 1, ActionType: 2}
+	req = &composite.BasicFavoriteActionRequest{VideoId: 5, UserId: 1, ActionType: 2}
 	resp, err = compositeClient.BasicFavoriteActionMethod(ctx, req)
 	if err != nil {
 		t.Error(err)
@@ -41,7 +41,7 @@ func TestFavoriteActionInvalidParam(t *testing.T) {
 	// 定义点赞请求
 	var req *composite.BasicFavoriteActionRequest
 	// 点赞测试
-	req = &composite.BasicFavoriteActionRequest{VedioId: -5, UserId: -1, ActionType: 1}
+	req = &composite.BasicFavoriteActionRequest{VideoId: -5, UserId: -1, ActionType: 1}
 	resp, err := compositeClient.BasicFavoriteActionMethod(ctx, req)
 	if err != nil {
 		t.Error(err)
